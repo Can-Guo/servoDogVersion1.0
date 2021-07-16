@@ -9,6 +9,7 @@ class HardwareInterface:
         open_io = "sudo pigpiod"
         os.system(open_io)
         time.sleep(1)
+        
         self.pi = pigpio.pi()
         self.servo_pwm_params = Servo_PWM_Parameter()
         self.thruster_pwm_params = Thruster_PWM_Para()
@@ -38,7 +39,7 @@ def send_servo_commands(pi, servo_pwm_params, joint_angles):
                 axis_index,
                 leg_index,
             )
-            pi.set_servo_pulsewidth(servo_pwm_params.pins[axis_index, leg_index], pulse_width[leg_index,axis_index])
+            pi.set_servo_pulsewidth(servo_pwm_params.pins[axis_index, leg_index], pulse_width[axis_index, leg_index])
 
 
 def joint_deg_to_pulse_width(joint_angles,pulse_width,axis_index,leg_index):

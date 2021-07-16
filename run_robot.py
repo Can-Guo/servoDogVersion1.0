@@ -9,6 +9,7 @@ Copyright (c) 2021 Your Company
 import time 
 import numpy as np 
 import os
+import pigpio
 
 from IMU import read_imu_angle_N
 from HardwareInterface import HardwareInterface
