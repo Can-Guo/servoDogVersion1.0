@@ -36,16 +36,21 @@ def main():
 
     while True:
 
-        joint_angles_1 = np.array ([[180,180,180],
-                                    [180,180,180],
-                                    [180,180,180],
-                                    [180,180,180]])
+        joint_angles_1 = np.array ([[200,200,200,200],
+                                    [200,200,200,200],
+                                    [180,180,180,180]])
+                                    # [180,180,180]])
         # joint_angles_2 = np.array([])
         hardware_interface.set_actuator_positions(joint_angles_1)
-        time.sleep(1)
-        # hardware_interface.set_actuator_positions()
+        time.sleep(3)
+        joint_angles_2 = np.array ([[150,150,150,150],
+                                    [150,150,150,150],
+                                    [150,150,150,150]])
 
-    
+        hardware_interface.set_actuator_positions(joint_angles_2)
+        time.sleep(3)
+
+
 
 
 

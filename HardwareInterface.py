@@ -12,9 +12,9 @@ class HardwareInterface:
         
         self.pi = pigpio.pi()
         self.servo_pwm_params = Servo_PWM_Parameter()
-        self.thruster_pwm_params = Thruster_PWM_Para()
+        # self.thruster_pwm_params = Thruster_PWM_Para()
         initialize_pwm(self.pi, self.servo_pwm_params)
-        initialize_pwm(self.pi, self.thruster_pwm_params)
+        # initialize_pwm(self.pi, self.thruster_pwm_params)
     
     def set_actuator_positions(self, joint_angles):
         send_servo_commands(self.pi, self.servo_pwm_params, joint_angles)
@@ -34,18 +34,30 @@ def send_servo_commands(pi, servo_pwm_params, joint_angles):
     for leg_index in range(4):
         for axis_index in range(3):
             pulse_width = joint_deg_to_pulse_width(
-                joint_angles[axis_index, leg_index],
-                servo_pwm_params,
-                axis_index,
-                leg_index,
-            )
-            pi.set_servo_pulsewidth(servo_pwm_params.pins[axis_index, leg_index], pulse_width[axis_index, leg_index])
+                joint_angles[axis_index, leg_index])
+            #     servo_pwm_params,
+            #     axis_index,
+            #     leg_index,
+            # )
+            # duty_cycle = angle_to_duty_cycle(joint_angles[axis_index,leg_index])
+            # pi.set_PWM_dutycycle(servo_pwm_params.pins[axis_index,leg_index], duty_cycle)
+            pi.set_servo_pulsewidth(servo_pwm_params.pins[axis_index, leg_index], pulse_width)#[axis_index, leg_index])
+            print("pins: %d pulse width: %d" % (servo_pwm_params.pins[axis_index,leg_index], pulse_width))
 
+def angle_to_duty_cycle(joint_angles):
+    # deg : 0  ---  180  ---  360   (deg)
+    # duty: 5% ---  15%  ---  25%   
+    # width:500---  1500 ---  2500  (us)
+    duty_cycle = 20 * joint_angles / 360.0 
+    return duty_cycle
 
-def joint_deg_to_pulse_width(joint_angles,pulse_width,axis_index,leg_index):
+def joint_deg_to_pulse_width(joint_angles):#,pulse_width,axis_index,leg_index):
     # according to the mannual of servo motor by XUNLONGZHE.com
     # url : https://item.taobao.com/item.htm?spm=a1z10.5-c-s.w4002-17909957398.71.cd013fdd6F6uHw&id=616071138320
-    pulse_width[axis_index,leg_index] = 2.0 * joint_angles[axis_index,leg_index] / 360.0 + 0.5
+    # print("joint_angle:",type(joint_angles))
+    # print("pulse_width:",type(pulse_width))
+    pulse_width = 2000 * joint_angles / 360.0 + 500
+    return (int)(pulse_width)
 
 def deactivate_servos(pi, pwm_params):
     # dutycycle --> 0 

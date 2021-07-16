@@ -39,7 +39,7 @@ class Thruster_PWM_Para:
         # self.MAX_PWM_derivation = 500 # us
         # self.dead_zone = 50 # us
         self.range = 2000
-        self.pin = np.array([])
+        self.pins = np.array([])
         self.freq = 50 # 50Hz for T200 Thruster by Bluerobotics.com
 
     def intial_thruster_PWM(self):
