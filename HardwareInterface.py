@@ -6,9 +6,9 @@ import time
 
 class HardwareInterface:
     def __init__(self):
-        open_io = "sudo pigpiod"
-        os.system(open_io)
-        time.sleep(1)
+        # open_io = "sudo pigpiod"
+        # os.system(open_io)
+        # time.sleep(1)
         
         self.pi = pigpio.pi()
         self.servo_pwm_params = Servo_PWM_Parameter()
