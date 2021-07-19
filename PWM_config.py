@@ -1,3 +1,9 @@
+'''
+Date: 2021-07-16 10:56:55
+LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
+LastEditTime: 2021-07-19 09:28:18
+FilePath: /servoDogVersion1.0/PWM_config.py
+'''
 #####################################################################
 #   The first servo test of the servo_dog Version 1.0
 #   Date : 2021.07.12

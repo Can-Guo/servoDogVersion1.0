@@ -34,7 +34,12 @@ def main():
     
     print("servo will be working soon!")
 
+    # TODO: thruster control with posture data (roll,pitch,yaw) euler angle from IMU feedback.
+    # TODO: integrate into Wile(1) loop
+
+    # Thruster control by PWM. 20210719
     pi = pigpio.pi()
+
     # pi.set_PWM_frequency(16,100)
     pi.set_PWM_frequency(12,100)
 
@@ -46,6 +51,9 @@ def main():
     # pi.set_servo_pulsewidth(16,1450)
     pi.set_servo_pulsewidth(12,1560)
 
+    # 
+
+    # put two angle into servos, to test the waterproof performance of servos.s
 
     while True:
 
@@ -64,7 +72,6 @@ def main():
         time.sleep(1)
 
 
-
-
-
 main()
+
+
