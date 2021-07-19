@@ -34,21 +34,34 @@ def main():
     
     print("servo will be working soon!")
 
+    pi = pigpio.pi()
+    # pi.set_PWM_frequency(16,100)
+    pi.set_PWM_frequency(12,100)
+
+    # pi.set_servo_pulsewidth(16,1500)
+    pi.set_servo_pulsewidth(12,1500)
+
+    time.sleep(4)
+
+    # pi.set_servo_pulsewidth(16,1450)
+    pi.set_servo_pulsewidth(12,1560)
+
+
     while True:
 
-        joint_angles_1 = np.array ([[200,200,200,200],
-                                    [200,200,200,200],
+        joint_angles_1 = np.array ([[290,290,290,290],
+                                    [290,290,290,290],
                                     [180,180,180,180]])
                                     # [180,180,180]])
         # joint_angles_2 = np.array([])
         hardware_interface.set_actuator_positions(joint_angles_1)
-        time.sleep(3)
+        time.sleep(1)
         joint_angles_2 = np.array ([[150,150,150,150],
                                     [150,150,150,150],
                                     [150,150,150,150]])
 
         hardware_interface.set_actuator_positions(joint_angles_2)
-        time.sleep(3)
+        time.sleep(1)
 
 
 

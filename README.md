@@ -3,7 +3,7 @@
 # servoDogVersion2.0 project
 TODO: openloop control with a forward path feeding
 
-
+Note : Today, I crash a servo (a single one would costs about 800 RMB!), which is due to my false such as careless.
 
 # servoDogVersion1.0
 

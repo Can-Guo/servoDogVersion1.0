@@ -1,3 +1,9 @@
+'''
+Date: 2021-07-16 10:56:55
+LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
+LastEditTime: 2021-07-17 14:15:23
+FilePath: /servoDogVersion1.0/HardwareInterface.py
+'''
 import numpy
 import pigpio 
 from PWM_config import Servo_PWM_Parameter, Thruster_PWM_Para
