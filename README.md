@@ -5,6 +5,10 @@
  * @FilePath: /servoDogVersion1.0/README.md
 -->
 
+Reference Repository:
+https://github.com/miguelasd688/4-legged-robot-model
+Project URL:
+https://hackaday.io/project/171456-diy-hobby-servos-quadruped-robot
 
 # servoDogVersion2 .0 project
 TODO: open-loop control with a forward path feeding
