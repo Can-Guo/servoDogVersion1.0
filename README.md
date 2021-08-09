@@ -1,12 +1,13 @@
 <!--
  * @Date: 2021-07-16 10:56:55
  * @LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
- * @LastEditTime: 2021-07-19 09:40:47
+ * @LastEditTime: 2021-08-09 22:03:12
  * @FilePath: /servoDogVersion1.0/README.md
 -->
 
 Reference Repository:
 https://github.com/miguelasd688/4-legged-robot-model
+
 Project URL:
 https://hackaday.io/project/171456-diy-hobby-servos-quadruped-robot
 

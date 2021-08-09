@@ -1,7 +1,7 @@
 '''
 Date: 2021-07-16 10:56:55
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-07-17 14:15:23
+LastEditTime: 2021-07-19 17:31:10
 FilePath: /servoDogVersion1.0/HardwareInterface.py
 '''
 import numpy
@@ -47,7 +47,7 @@ def send_servo_commands(pi, servo_pwm_params, joint_angles):
             # )
             # duty_cycle = angle_to_duty_cycle(joint_angles[axis_index,leg_index])
             # pi.set_PWM_dutycycle(servo_pwm_params.pins[axis_index,leg_index], duty_cycle)
-            pi.set_servo_pulsewidth(servo_pwm_params.pins[axis_index, leg_index], pulse_width)#[axis_index, leg_index])
+            pi.set_servo_pulsewidth(servo_pwm_params.pins[axis_index, leg_index], pulse_width)  #[axis_index, leg_index])
             print("pins: %d pulse width: %d" % (servo_pwm_params.pins[axis_index,leg_index], pulse_width))
 
 def angle_to_duty_cycle(joint_angles):
