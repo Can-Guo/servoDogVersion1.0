@@ -1,12 +1,23 @@
 '''
 Date: 2021-08-10 15:00:51
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-08-11 10:47:13
+LastEditTime: 2021-08-11 12:43:57
 FilePath: /servoDogVersion1.0/Xbox_value.py
+Based on Source at pygame.joystick module demo -->
+http://www.pygame.org/docs/ref/joystick.html
 '''
 
-import pygame
 
+## Functions of the class:
+# This class can 
+# 1. initialize the XBOX One Wireless controller 
+# 2. access the axis, button & hat status of the joystick 
+# 3. access the ID,GUID,name in system, power level of the joystick
+
+
+
+
+import pygame
 
 # Initialize the pyname module
 pygame.init()
@@ -14,7 +25,7 @@ pygame.init()
 # Initialize the joystick sub-module
 pygame.joystick.init()
 
-class X_Struct:
+class XBOX_class:
     
     def __int__(self):
         
@@ -22,6 +33,9 @@ class X_Struct:
     
         # ID of the joystick
         self.joystick = None
+        self.name = None
+        self.GUID = None
+        
         # There are 6 axes in the XBOX joystick controller
         self.axis_0 = 0.0
         self.axis_1 = 0.0
@@ -82,9 +96,9 @@ class X_Struct:
             self.joystick.init()
             self.name = self.joystick.get_name()
 
-            print("Joystick ID:",self.joystick)
-            # print("The Name of the Joystick:",self.name)
-            
+            print("Joystick ID : ",self.joystick)
+            print("The Name of the Joystick : ",self.name)
+        
         # Get the number of axes
         self.axes = self.joystick.get_numaxes()
         # print("number of axes:", self.axes)
@@ -97,11 +111,17 @@ class X_Struct:
         self.hats = self.joystick.get_numhats()
         # print("number of hats:", self.hats)
 
-        # print("Initialization is done!")
-        # return self.joystick
-        # print(self.joystick.get_power_level())
+        # Get the power level of the joystick
+        self.power = self.joystick.get_power_level()
+        print("Power Level : " , self.power)
 
+        # Get the GUID of the joystick
+        self.GUID = self.joystick.get_guid()
+        print("GUID of the XBOX : " , self.GUID)
 
+        print("Initialization of the XBOX is done!")
+
+        
     def get_xbox_status(self):
         
         ## TODO: need to integrate with the non-class abjustment
@@ -115,17 +135,20 @@ class X_Struct:
         #         self.left_down = 1
         #     if i==0 and axis == -1:
         #         self.left_left = 1
-        done = False
+
+        ### HAHAHA ! Interesting ! 
+        self.done = False # Can be used to stop the scanning
+
         clock = pygame.time.Clock()
 
-        while done==False:
+        while self.done == False:
             
             # self.initialize_xbox()
             # EVENT PROCESSING STEP
             for event in pygame.event.get(): # User did something
                 if event.type == pygame.QUIT: # If user clicked close
-                    done=True # Flag that we are done so we exit this loop
-                
+                    self.done=True # Flag that we are done so we exit this loop
+            
             # Get the status of the buttons
             for i in range( self.buttons ):
                 button = self.joystick.get_button( i )
@@ -156,18 +179,19 @@ class X_Struct:
                     print("Menu")
                 if i == 8 and button == 1:
                     self.Connect = 1
-                    print("Connect")
+                    print("Stop Connection !")
+                    self.done = True
 
 
             for i in range( self.hats ):
                 hat = self.joystick.get_hat( i )
-                print(hat)
+                # print(hat)
                 if hat == (1,0):
                     self.FX_right = 1
-                    print("FX_right:1")
+                    print("FX_right")
                 if hat == (-1,0):
                     self.FX_left = 1
-                    print("FX_left:1")
+                    print("FX_left")
                 if hat == (0,1):
                     self.FX_up = 1
                     print("FX_up")
@@ -176,12 +200,11 @@ class X_Struct:
                     print("FX_down")
 
 
-            clock.tick(10)
+            clock.tick(20)
 
 
 
-xbox = X_Struct()
+xbox = XBOX_class()
 xbox.initialize_xbox()
 xbox.get_xbox_status()
-    
-
+print(xbox.done)

@@ -1,9 +1,11 @@
 '''
 Date: 2021-07-19 17:19:15
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-08-10 23:31:29
+LastEditTime: 2021-08-11 12:10:00
 FilePath: /servoDogVersion1.0/Xbox_demo.py
+Source: http://www.pygame.org/docs/ref/joystick.html
 '''
+
 
 import pygame
  
@@ -139,7 +141,6 @@ while done==False:
         for i in range( buttons ):
             button = joystick.get_button( i )
             textPrint.print(screen, "Button {:>2} value: {}".format(i,button) )
-            # print(i,button)
             if i==0 and button ==1:
                 print("A")
             if i==1 and button ==1:
@@ -176,7 +177,7 @@ while done==False:
         for i in range( hats ):
             hat = joystick.get_hat( i )
             textPrint.print(screen, "Hat {} value: {}".format(i, str(hat)) )
-            # print(hat)
+        
             if hat==(1,0) :
                 print("FX right")
             if hat==(-1,0) :
