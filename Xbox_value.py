@@ -1,7 +1,7 @@
 '''
 Date: 2021-08-10 15:00:51
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-08-11 12:43:57
+LastEditTime: 2021-08-11 16:32:41
 FilePath: /servoDogVersion1.0/Xbox_value.py
 Based on Source at pygame.joystick module demo -->
 http://www.pygame.org/docs/ref/joystick.html
@@ -13,8 +13,6 @@ http://www.pygame.org/docs/ref/joystick.html
 # 1. initialize the XBOX One Wireless controller 
 # 2. access the axis, button & hat status of the joystick 
 # 3. access the ID,GUID,name in system, power level of the joystick
-
-
 
 
 import pygame
@@ -37,15 +35,20 @@ class XBOX_class:
         self.GUID = None
         
         # There are 6 axes in the XBOX joystick controller
-        self.axis_0 = 0.0
-        self.axis_1 = 0.0
-        self.axis_2 = -1.0
-        self.axis_3 = 0.0
-        self.axis_4 = 0.0
-        self.axis_5 = -1.0
+        # axis_0,axis_1 --> left  stick
+        # axis_3,axis_4 --> right stick
+        # axis_2 --> Left trigger
+        # axis_5 --> Right trigger
+        
+        self.axis_0 = 0.
+        self.axis_1 = 0.
+        self.L_step = -1.
+        self.axis_3 = 0.
+        self.axis_4 = 0.
+        self.R_step = -1.
 
         # There are 11 buttons in the XBOX joystick controller
-        self.A = 0
+        self.A = 0 
         self.B = 0
         self.X = 0
         self.Y = 0
@@ -76,11 +79,8 @@ class XBOX_class:
 
 
         print("XBOX is Initializing ......")
-
-
-        # initialize the xbox joystick controller
-        # return the flag of the 
-        # self.joystick = self.initialize_xbox()
+        
+        # self.initialize_xbox(self)
 
 
     def initialize_xbox(self):
@@ -124,17 +124,9 @@ class XBOX_class:
         
     def get_xbox_status(self):
         
-        ## TODO: need to integrate with the non-class abjustment
+        ## TODO: need to integrate with the stepless abjustment of Power 
 
-        # # Get the status of the axes
-        # for i in range( axes ):
-        #     axis = joystick.get_axis( i )
-        #     if i==1 and axis == -1.0:
-        #         self.left_up = 1
-        #     if i==1 and axis > 0.3:
-        #         self.left_down = 1
-        #     if i==0 and axis == -1:
-        #         self.left_left = 1
+ 
 
         ### HAHAHA ! Interesting ! 
         self.done = False # Can be used to stop the scanning
@@ -149,6 +141,29 @@ class XBOX_class:
                 if event.type == pygame.QUIT: # If user clicked close
                     self.done=True # Flag that we are done so we exit this loop
             
+
+            # Get the status of the axes
+            for i in range( self.axes ):
+                axis = self.joystick.get_axis( i )
+                # print(self.axes)
+                if i == 0:
+                    self.axis_0 = axis
+                if i == 1:
+                    self.axis_1 = axis
+                if i == 2:
+                    self.L_step = axis
+                if i == 3:
+                    self.axis_3 = axis
+                if i == 4:
+                    self.axis_4 = axis
+                if i == 5:
+                    self.R_step = axis
+
+            print("Stick 1  (%f,%f)  \n" % (self.axis_0, self.axis_1))
+            print(" Left_Step  %f  \n" % self.L_step)
+            print("Stick 2  (%f,%f)  \n" % (self.axis_3, self.axis_4))
+            print("Right_Step  %f  \n" % self.R_step)
+
             # Get the status of the buttons
             for i in range( self.buttons ):
                 button = self.joystick.get_button( i )
