@@ -1,8 +1,8 @@
 '''
 Date: 2021-07-19 17:19:15
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-07-19 17:29:59
-FilePath: /servoDogVersion1.0/Xbox.py
+LastEditTime: 2021-08-10 23:31:29
+FilePath: /servoDogVersion1.0/Xbox_demo.py
 '''
 
 import pygame
@@ -47,16 +47,16 @@ pygame.display.set_caption("My Game")
  
 #Loop until the user clicks the close button.
 done = False
- 
+
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
  
 # Initialize the joysticks
 pygame.joystick.init()
-    
+
 # Get ready to print
 textPrint = TextPrint()
- 
+
 # -------- Main Program Loop -----------
 
 while done==False:
@@ -71,22 +71,23 @@ while done==False:
         #    print("Joystick button pressed.")
         # if event.type == pygame.JOYBUTTONUP:
         #    print("Joystick button released.")
-            
- 
+
+
     # DRAWING STEP
     # First, clear the screen to white. Don't put other drawing commands
     # above this, or they will be erased with this command.
     screen.fill(WHITE)
     textPrint.reset()
- 
+
     # Get count of joysticks
     joystick_count = pygame.joystick.get_count()
- 
+
     #textPrint.print(screen, "Number of joysticks: {}".format(joystick_count) )
     textPrint.indent()
     
     # For each joystick:
     for i in range(joystick_count):
+        # print(i)
         joystick = pygame.joystick.Joystick(i)
         joystick.init()
     
@@ -100,6 +101,7 @@ while done==False:
         # Usually axis run in pairs, up/down for one, and left/right for
         # the other.
         axes = joystick.get_numaxes()
+        print("number of axis:",axes)
         #textPrint.print(screen, "Number of axes: {}".format(axes) )
         #textPrint.indent()
         
@@ -130,12 +132,14 @@ while done==False:
         textPrint.unindent()
             
         buttons = joystick.get_numbuttons()
+        print("number of buttons:",buttons)
         textPrint.print(screen, "Number of buttons: {}".format(buttons) )
         textPrint.indent()
  
         for i in range( buttons ):
             button = joystick.get_button( i )
             textPrint.print(screen, "Button {:>2} value: {}".format(i,button) )
+            # print(i,button)
             if i==0 and button ==1:
                 print("A")
             if i==1 and button ==1:
@@ -164,12 +168,15 @@ while done==False:
         # Hat switch. All or nothing for direction, not like joysticks.
         # Value comes back in an array.
         hats = joystick.get_numhats()
+        print("number of hats:", hats)
+        
         textPrint.print(screen, "Number of hats: {}".format(hats) )
         textPrint.indent()
  
         for i in range( hats ):
             hat = joystick.get_hat( i )
             textPrint.print(screen, "Hat {} value: {}".format(i, str(hat)) )
+            # print(hat)
             if hat==(1,0) :
                 print("FX right")
             if hat==(-1,0) :
@@ -189,7 +196,7 @@ while done==False:
     pygame.display.flip()
  
     # Limit to 20 frames per second
-    clock.tick(20)
+    clock.tick(10)
     
 # Close the window and quit.
 # If you forget this line, the program will 'hang'
