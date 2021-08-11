@@ -1,9 +1,17 @@
 <!--
  * @Date: 2021-07-16 10:56:55
  * @LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
- * @LastEditTime: 2021-08-09 22:03:12
+ * @LastEditTime: 2021-08-11 12:47:52
  * @FilePath: /servoDogVersion1.0/README.md
 -->
+
+
+# servoDogVersion1 .1 project
+1. Added XBOX module as a class to read the status of the axes,buttons & hats, successfully.210810 12:47
+
+
+# servoDogVersion2 .0 project
+TODO: open-loop control with a forward path feeding
 
 Reference Repository:
 https://github.com/miguelasd688/4-legged-robot-model
@@ -11,8 +19,6 @@ https://github.com/miguelasd688/4-legged-robot-model
 Project URL:
 https://hackaday.io/project/171456-diy-hobby-servos-quadruped-robot
 
-# servoDogVersion2 .0 project
-TODO: open-loop control with a forward path feeding
 
 Note: Today, I crash a servo(a single one would costs about 800 RMB!), which is due to my false such as careless.
 
