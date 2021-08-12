@@ -1,7 +1,7 @@
 '''
 Date: 2021-08-10 15:00:51
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-08-11 16:32:41
+LastEditTime: 2021-08-12 11:22:33
 FilePath: /servoDogVersion1.0/Xbox_value.py
 Based on Source at pygame.joystick module demo -->
 http://www.pygame.org/docs/ref/joystick.html
@@ -17,11 +17,6 @@ http://www.pygame.org/docs/ref/joystick.html
 
 import pygame
 
-# Initialize the pyname module
-pygame.init()
-
-# Initialize the joystick sub-module
-pygame.joystick.init()
 
 class XBOX_class:
     
@@ -84,6 +79,12 @@ class XBOX_class:
 
 
     def initialize_xbox(self):
+        
+        # Initialize the pyname module
+        pygame.init()
+
+        # Initialize the joystick sub-module
+        pygame.joystick.init()
 
         # initialize the clock block
         # clock = pygame.time.Clock()
@@ -159,10 +160,10 @@ class XBOX_class:
                 if i == 5:
                     self.R_step = axis
 
-            print("Stick 1  (%f,%f)  \n" % (self.axis_0, self.axis_1))
-            print(" Left_Step  %f  \n" % self.L_step)
-            print("Stick 2  (%f,%f)  \n" % (self.axis_3, self.axis_4))
-            print("Right_Step  %f  \n" % self.R_step)
+            # print("Stick 1  (%f,%f)  \n" % (self.axis_0, self.axis_1))
+            # print(" Left_Step  %f  \n" % self.L_step)
+            # print("Stick 2  (%f,%f)  \n" % (self.axis_3, self.axis_4))
+            # print("Right_Step  %f  \n" % self.R_step)
 
             # Get the status of the buttons
             for i in range( self.buttons ):
@@ -215,11 +216,15 @@ class XBOX_class:
                     print("FX_down")
 
 
-            clock.tick(20)
+            clock.tick(30)
 
 
 
+##########################
+# Test the Xbox class module.
 xbox = XBOX_class()
 xbox.initialize_xbox()
 xbox.get_xbox_status()
 print(xbox.done)
+# Test End.
+##########################

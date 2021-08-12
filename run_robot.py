@@ -10,7 +10,7 @@ import time
 import numpy as np 
 import os
 import pigpio
-
+from Xbox_value import XBOX_class
 from IMU import read_imu_angle_N
 from HardwareInterface import HardwareInterface
 
@@ -20,8 +20,14 @@ def main():
 ####################################################################################################
 # Before you run the following command, you need to authorize to access the USB port -- /dev/ttyUSB0
 # type in your terminal : sudo chmod 666 /dev/ttyUSB0 
-####################################################################################################
+##################yellow##################################################################################
 
+    xbox = XBOX_class()
+    xbox.initialize_xbox()
+    # FIXME: need to reading the joystick data while controlling PWM
+    # multi-threading
+    xbox.get_xbox_status()
+    print(xbox.done)
 
     N = 100
     Angle = read_imu_angle_N(N)
