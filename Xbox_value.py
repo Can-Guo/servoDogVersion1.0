@@ -1,7 +1,7 @@
 '''
 Date: 2021-08-10 15:00:51
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-08-12 11:22:33
+LastEditTime: 2021-08-12 23:14:38
 FilePath: /servoDogVersion1.0/Xbox_value.py
 Based on Source at pygame.joystick module demo -->
 http://www.pygame.org/docs/ref/joystick.html
@@ -92,14 +92,20 @@ class XBOX_class:
         # Initialize the joystick No.1, can integrated with more than 1 joystick
         joystick_count = pygame.joystick.get_count()
 
-        if joystick_count == 1:
+        if joystick_count == 0 :
+            print("No Joystick is connected!")
+
+        elif joystick_count ==1 :
             self.joystick = pygame.joystick.Joystick(0)
             self.joystick.init()
             self.name = self.joystick.get_name()
 
             print("Joystick ID : ",self.joystick)
             print("The Name of the Joystick : ",self.name)
-        
+            
+        elif joystick_count >= 2 :
+            print("The XBOX class has no compatible with more than 1 joystick, yet!")
+
         # Get the number of axes
         self.axes = self.joystick.get_numaxes()
         # print("number of axes:", self.axes)

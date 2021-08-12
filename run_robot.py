@@ -3,7 +3,6 @@ Filename: /home/guoyucan/ServoDogVersion1.0/run_robot.py
 Path: /home/guoyucan/ServoDogVersion1.0
 Created Date: Thursday, July 15th 2021, 3:04:34 pm
 Author: guoyucan
-
 Copyright (c) 2021 Your Company
 '''
 import time 
@@ -17,10 +16,11 @@ from HardwareInterface import HardwareInterface
 ## TODO: run the robot endless, to test the waterproof performance
 
 def main():
-####################################################################################################
-# Before you run the following command, you need to authorize to access the USB port -- /dev/ttyUSB0
+################################################################
+# Before you run the following command, 
+# you need to authorize to access the USB port -- /dev/ttyUSB0
 # type in your terminal : sudo chmod 666 /dev/ttyUSB0 
-##################yellow##################################################################################
+################################################################
 
     xbox = XBOX_class()
     xbox.initialize_xbox()
@@ -37,10 +37,11 @@ def main():
     # create configuration of servo and thruster
     hardware_interface = HardwareInterface()
     print("PWM configuration of servos and thrusters are done!")
-    
+
     print("servo will be working soon!")
 
-    # TODO: thruster control with posture data (roll,pitch,yaw) euler angle from IMU feedback.
+    # TODO: thruster control with posture data (roll,pitch,yaw)
+    #       euler angle from IMU feedback.
     # TODO: integrate into Wile(1) loop
 
     # Thruster control by PWM. 20210719
@@ -56,8 +57,6 @@ def main():
 
     # pi.set_servo_pulsewidth(16,1450)
     pi.set_servo_pulsewidth(12,1560)
-
-    # 
 
     # put two angle into servos, to test the waterproof performance of servos.s
 
