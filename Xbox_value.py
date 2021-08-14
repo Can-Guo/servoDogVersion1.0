@@ -1,7 +1,7 @@
 '''
 Date: 2021-08-10 15:00:51
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-08-12 23:14:38
+LastEditTime: 2021-08-14 21:09:30
 FilePath: /servoDogVersion1.0/Xbox_value.py
 Based on Source at pygame.joystick module demo -->
 http://www.pygame.org/docs/ref/joystick.html
@@ -94,6 +94,7 @@ class XBOX_class:
 
         if joystick_count == 0 :
             print("No Joystick is connected!")
+            pass
 
         elif joystick_count ==1 :
             self.joystick = pygame.joystick.Joystick(0)
@@ -105,7 +106,8 @@ class XBOX_class:
             
         elif joystick_count >= 2 :
             print("The XBOX class has no compatible with more than 1 joystick, yet!")
-
+            pass
+        
         # Get the number of axes
         self.axes = self.joystick.get_numaxes()
         # print("number of axes:", self.axes)
