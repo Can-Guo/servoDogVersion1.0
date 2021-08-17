@@ -25,9 +25,10 @@ def main():
     xbox = XBOX_class()
     xbox.initialize_xbox()
     # FIXME: need to reading the joystick data while controlling PWM
-    # multi-threading
+    # TODO: multi-threading
     xbox.get_xbox_status()
     print(xbox.done)
+
 
     N = 100
     Angle = read_imu_angle_N(N)

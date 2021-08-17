@@ -1,8 +1,8 @@
 '''
 Date: 2021-08-10 15:00:51
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-08-14 21:09:30
-FilePath: /servoDogVersion1.0/Xbox_value.py
+LastEditTime: 2021-08-17 16:52:25
+FilePath: /servoDogVersion1.0/source/Xbox_value.py
 Based on Source at pygame.joystick module demo -->
 http://www.pygame.org/docs/ref/joystick.html
 '''
@@ -223,8 +223,8 @@ class XBOX_class:
                     self.FX_down = 1
                     print("FX_down")
 
-
-            clock.tick(30)
+            self.done = True
+            # clock.tick(30)
 
 
 
