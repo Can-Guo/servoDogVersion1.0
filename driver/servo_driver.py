@@ -7,9 +7,7 @@ Author: guoyucan
 Copyright (c) 2021 SUSTECH
 '''
 
-from source.HardwareInterface import joint_deg_to_pulse_width
 import numpy as np
-from numpy.lib.function_base import select 
 import pigpio  # the module to configurate the hardware, for Raspberrypi
                # For other hardware, please find another module to do the job.
 
@@ -48,9 +46,10 @@ class Servo_PWM:
 
     def send_deg_to_servo(self,joint_angle):
 
-        self.pi.set_servo_pulsewidth(self.pin,joint_deg_to_pulse_width(joint_angle))
+        self.pi.set_servo_pulsewidth(self.pin,self.joint_deg_to_pulse_width(joint_angle))
 
         print("Pin : %d | Angle : %d", (self.pin, joint_angle))
 
         return 
+
 
