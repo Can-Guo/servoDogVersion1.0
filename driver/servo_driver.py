@@ -7,6 +7,12 @@ Author: guoyucan
 Copyright (c) 2021 SUSTECH
 '''
 
+## Before using this module, please run the following command on your shell.
+#  sudo pigpiod
+#  To install the pigpio library, please refer to the URL:
+#  http://abyz.me.uk/rpi/pigpio/download.html
+
+
 import numpy as np
 import pigpio  # the module to configurate the hardware, for Raspberrypi
                # For other hardware, please find another module to do the job.
@@ -51,5 +57,26 @@ class Servo_PWM:
         print("Pin : %d | Angle : %d", (self.pin, joint_angle))
 
         return 
+
+
+    def send_path_to_servo(self, joint_angle_sequence):
+        for angle in joint_angle_sequence:
+            self.send_deg_to_servo(angle)
+
+        print("Send path success!")
+
+
+
+
+################################
+# Test the Servo_PWM class
+pwm_servo = Servo_PWM()
+
+angles = np.zeros([100,1])
+
+pwm_servo.send_path_to_servo(angles)
+
+# Testing end.
+###############################
 
 
