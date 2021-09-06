@@ -15,6 +15,9 @@ from HardwareInterface import HardwareInterface
 
 ## TODO: run the robot endless, to test the waterproof performance
 
+
+
+
 def main():
 ################################################################
 # Before you run the following command, 
@@ -78,6 +81,8 @@ def main():
         time.sleep(1)
 
 
-main()
+if __name__ == '__main__':
+
+    main()
 
 

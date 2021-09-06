@@ -58,7 +58,6 @@ class Servo_PWM:
 
         return 
 
-
     def send_path_to_servo(self, joint_angle_sequence):
         for angle in joint_angle_sequence:
             self.send_deg_to_servo(angle)
@@ -70,10 +69,9 @@ class Servo_PWM:
 
 ################################
 # Test the Servo_PWM class
+
 pwm_servo = Servo_PWM()
-
 angles = np.zeros([100,1])
-
 pwm_servo.send_path_to_servo(angles)
 
 # Testing end.
