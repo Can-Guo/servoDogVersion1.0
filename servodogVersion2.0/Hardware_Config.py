@@ -1,7 +1,7 @@
 '''
 Date: 2021-11-10 22:44:35
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-11 01:25:19
+LastEditTime: 2021-11-11 03:39:26
 FilePath: /servodogVersion2.0/Hardware_Config.py
 '''
 import pigpio 
@@ -42,6 +42,7 @@ class Hardware_Class:
 
     
     def send_io_pwm(self,PIN,Pulse_width):
+        Pulse_width = int(Pulse_width)
         self.pi.set_servo_pulsewidth(PIN,Pulse_width)
 
         return

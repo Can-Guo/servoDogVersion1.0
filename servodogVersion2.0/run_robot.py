@@ -1,8 +1,8 @@
 '''
 Date: 2021-11-10 22:11:41
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-11 01:58:29
-FilePath: /servodogVersion2.0/run_robot.py
+LastEditTime: 2021-11-11 05:01:18
+FilePath: /servoDogVersion1.0/servodogVersion2.0/run_robot.py
 '''
 import numpy as np 
 import pigpio 
@@ -16,6 +16,7 @@ from threading import Thread
 import matplotlib.pyplot as plt
 
 from initial_pwm import POWER 
+import time 
 
 ## Two Thread for XBOX 
 
@@ -35,10 +36,15 @@ def XBOX_access(output_queue_1):
 def XBOX_command(input_queue_1):
     print("Thread - 2 ")
     Hardware = Hardware_Class()
-    Hardware.initialize_leg_pwm()
-    Hardware.initialize_usrl_pwm()
+    # Hardware.initialize_leg_pwm()
     
-    Hardware.usrl_pwm.T200_power_scale = POWER[3]
+    Hardware.initialize_usrl_pwm()
+    time.sleep(5)
+    
+    Hardware.usrl_pwm.T200_power_scale = POWER[4]
+
+    Hardware.send_io_pwm(20,1560)
+    Hardware.send_io_pwm(21,1560)
 
     while True:
         command = input_queue_1.get()
@@ -49,16 +55,21 @@ def XBOX_command(input_queue_1):
         ### 
 
         if command.X == 1: 
-            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],500)
+            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],2000)
+            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],1500)
+
             print("X:",command.X)
-        if command.A == 1:
-            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],1000)
-            print("A:",command.A)
-        if command.B == 1:
+        elif command.A == 1:
             Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],1500)
+            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],2000)
+            print("A:",command.A)
+        elif command.B == 1:
+            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],1000)
+            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],500)
             print("B:",command.B)
-        if command.Y == 1:
-            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],2500)
+        elif command.Y == 1:
+            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],500)
+            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],1000)
             print("Y:",command.Y)
 
         ### USRL T200 control based on the value of L_step
@@ -73,12 +84,17 @@ def XBOX_command(input_queue_1):
         if command.L_step == 0 :
             Pwm = 1500 + 200 * Power
         else:
-            Pwm = 1500 + (command.L_step + 1) * (400/2.0) * Power
+            Pwm = (1500 + (int)(command.L_step + 1) * (400/2.0) * Power)
 
-        print("PWM:",Pwm)
+        print("PWM:",(int)(Pwm))
 
-        for i in range(2):
-            Hardware.send_io_pwm(Hardware.usrl_pwm.T200_pins[i],Pwm)
+        # for i in range(2):
+            # Hardware.send_io_pwm(Hardware.usrl_pwm.T200_pins[i],Pwm)
+
+        # time.sleep(5)
+
+        Hardware.send_io_pwm(21,Pwm)
+        
 
 
         # print("Thread - 2 is running :",command)

@@ -1,7 +1,7 @@
 '''
 Date: 2021-08-10 15:00:51
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-11 01:14:39
+LastEditTime: 2021-11-11 03:16:42
 FilePath: /servodogVersion2.0/Xbox_value.py
 Based on Source at pygame.joystick module demo -->
 http://www.pygame.org/docs/ref/joystick.html
@@ -190,15 +190,28 @@ class XBOX_class(object):
                 # print(i,button)
                 if i == 0 and button == 1:
                     self.A = 1.0
+                    self.B = 0
+                    self.X = 0
+                    self.Y = 0
+
                     print("A")
                 if i == 1 and button == 1:
-                    self.B = 1.0
+                    self.A = 0
+                    self.B = 1
+                    self.X = 0
+                    self.Y = 0
                     print("B")
                 if i == 2 and button == 1:
-                    self.X = 1.0
+                    self.A = 0
+                    self.B = 0
+                    self.X = 1
+                    self.Y = 0
                     print("X")
                 if i == 3 and button == 1:
-                    self.Y = 1.0
+                    self.A = 0
+                    self.B = 0
+                    self.X = 0
+                    self.Y = 1
                     print("Y")
                 if i == 4 and button == 1:
                     self.LB = 1.0
