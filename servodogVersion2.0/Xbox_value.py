@@ -1,8 +1,8 @@
 '''
 Date: 2021-08-10 15:00:51
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-10 13:24:50
-FilePath: /servoDogVersion1.0/source/Xbox_value.py
+LastEditTime: 2021-11-11 01:14:39
+FilePath: /servodogVersion2.0/Xbox_value.py
 Based on Source at pygame.joystick module demo -->
 http://www.pygame.org/docs/ref/joystick.html
 '''
@@ -16,19 +16,20 @@ http://www.pygame.org/docs/ref/joystick.html
 
 
 import pygame
+import os,sys 
 
-
-class XBOX_class:
+class XBOX_class(object):
     
     def __int__(self):
         
-        # TODO: Define the function of the axes & buttons of the XBOX controller
-    
-        # ID of the joystick
+        # TODO: Define the function of the axes & buttons of the XBOX controlle
+        
+        # # ID of the joystick
         self.joystick = None
         self.name = None
         self.GUID = None
-        
+        self.done = None # Can be used to stop the scanning
+
         # There are 6 axes in the XBOX joystick controller
         # axis_0,axis_1 --> left  stick
         # axis_3,axis_4 --> right stick
@@ -42,44 +43,20 @@ class XBOX_class:
         self.axis_4 = 0.
         self.R_step = -1.
 
-        # There are 11 buttons in the XBOX joystick controller
-        self.A = 0 
-        self.B = 0
-        self.X = 0
-        self.Y = 0
 
-        self.LB = 0
-        self.RB = 0
-        self.View = 0
-        self.Menu = 0
-        self.Connect = 0
 
-        # There is only one hat (0,0) in the XBOX joystick controller
-
-        # hat_0 = (-1, 0) --> FX_left
-        # hat_0 = (0 ,-1) --> FX_down
-        # hat_0 = (0 , 1) --> FX_up
-        # hat_0 = (1 , 0) --> FX_right
-        
-        self.FX_right = 0
-        self.FX_left = 0
-        self.FX_up = 0
-        self.FX_down = 0
-
-        
         # number of axes, buttons, hat(s)
-        self.axes = 0
-        self.buttons = 0
-        self.hats = 0
+        self.axes = 0.
+        self.buttons = 0.
+        self.hats = 0.
 
 
         print("XBOX is Initializing ......")
         
-        # self.initialize_xbox(self)
+        
 
 
     def initialize_xbox(self):
-        
         # Initialize the pyname module
         pygame.init()
 
@@ -94,7 +71,7 @@ class XBOX_class:
 
         if joystick_count == 0 :
             print("No Joystick is connected!")
-            pass
+            
 
         elif joystick_count ==1 :
             self.joystick = pygame.joystick.Joystick(0)
@@ -106,7 +83,7 @@ class XBOX_class:
             
         elif joystick_count >= 2 :
             print("The XBOX class has no compatible with more than 1 joystick, yet!")
-            pass
+            
         
         # Get the number of axes
         self.axes = self.joystick.get_numaxes()
@@ -123,6 +100,34 @@ class XBOX_class:
         # Get the power level of the joystick
         self.power = self.joystick.get_power_level()
         print("Power Level : " , self.power)
+        # There are 11 buttons in the XBOX joystick controller
+        
+        self.A = 0.
+        self.B = 0.
+        self.X = 0.
+        self.Y = 0.
+        self.LB = 0.
+        self.RB = 0.
+        self.View = 0.
+        self.Menu = 0.
+        self.Disonnect = 0.
+
+
+        # There is only one hat (0,0) in the XBOX joystick controller
+
+        # hat_0 = (-1, 0) --> FX_left
+        # hat_0 = (0 ,-1) --> FX_down
+        # hat_0 = (0 , 1) --> FX_up
+        # hat_0 = (1 , 0) --> FX_right
+        
+        
+        self.FX_right = 0.
+        self.FX_left = 0.
+        self.FX_up = 0.
+        self.FX_down = 0.
+        self.FX_default = 0.
+        
+
 
         # Get the GUID of the joystick
         self.GUID = self.joystick.get_guid()
@@ -132,23 +137,27 @@ class XBOX_class:
 
         
     def get_xbox_status(self):
-        
-        ## TODO: need to integrate with the stepless abjustment of Power 
 
- 
+        self.done = False
 
-        ### HAHAHA ! Interesting ! 
-        self.done = False # Can be used to stop the scanning
+        if self.done == False:
+            ## TODO: need to integrate with the stepless abjustment of Power 
 
-        clock = pygame.time.Clock()
+            ### HAHAHA ! Interesting ! 
 
-        while self.done == False:
+
+            clock = pygame.time.Clock()
             
+            
+            # while self.done == False:
+                
             # self.initialize_xbox()
             # EVENT PROCESSING STEP
             for event in pygame.event.get(): # User did something
                 if event.type == pygame.QUIT: # If user clicked close
-                    self.done=True # Flag that we are done so we exit this loop
+                    # self.done=True # Flag that we are done so we exit this loop
+                    pygame.quit()
+                    exit()
             
 
             # Get the status of the axes
@@ -161,12 +170,14 @@ class XBOX_class:
                     self.axis_1 = axis
                 if i == 2:
                     self.L_step = axis
+                    print("L Step  ",self.L_step)
                 if i == 3:
                     self.axis_3 = axis
                 if i == 4:
                     self.axis_4 = axis
                 if i == 5:
                     self.R_step = axis
+                    print("R Step  ",self.R_step)
 
             # print("Stick 1  (%f,%f)  \n" % (self.axis_0, self.axis_1))
             # print(" Left_Step  %f  \n" % self.L_step)
@@ -178,61 +189,76 @@ class XBOX_class:
                 button = self.joystick.get_button( i )
                 # print(i,button)
                 if i == 0 and button == 1:
-                    self.A = 1
+                    self.A = 1.0
                     print("A")
                 if i == 1 and button == 1:
-                    self.B = 1
+                    self.B = 1.0
                     print("B")
                 if i == 2 and button == 1:
-                    self.X = 1
+                    self.X = 1.0
                     print("X")
                 if i == 3 and button == 1:
-                    self.Y = 1
+                    self.Y = 1.0
                     print("Y")
                 if i == 4 and button == 1:
-                    self.LB = 1
+                    self.LB = 1.0
                     print("LB")
                 if i == 5 and button == 1:
-                    self.RB = 1
+                    self.RB = 1.0
                     print("RB")
                 if i == 6 and button == 1:
-                    self.View = 1
+                    self.View = 1.0
                     print("View")
                 if i == 7 and button == 1:
-                    self.Menu = 1
+                    self.Menu = 1.0
                     print("Menu")
                 if i == 8 and button == 1:
-                    self.Connect = 1
+                    self.Disonnect = 1.0
                     print("Stop Connection !")
                     self.done = True
+                    self.shutdown()
 
+                # print("access A value",self.A)
 
             for i in range( self.hats ):
                 hat = self.joystick.get_hat( i )
                 # print(hat)
                 if hat == (1,0):
-                    self.FX_right = 1
+                    self.FX_right = 1.0
                     print("FX_right")
                 if hat == (-1,0):
-                    self.FX_left = 1
+                    self.FX_left = 1.0
                     print("FX_left")
                 if hat == (0,1):
-                    self.FX_up = 1
+                    self.FX_up = 1.0
                     print("FX_up")
                 if hat == (0,-1):
-                    self.FX_down = 1
+                    self.FX_down = 1.0
                     print("FX_down")
+                if hat == (0,0):
+                    self.FX_default = 1.0
+                    
+                    
+            clock.tick(10)
+        
+        return self
 
-            # self.done = True
-            clock.tick(30)
-
-
+    def shutdown(self):
+        if self.done == True:
+            pygame.joystick.quit()
+            pygame.quit()
+            exit()
+            
+            
 
 ##########################
 # Test the Xbox class module.
-xbox = XBOX_class()
-xbox.initialize_xbox()
-xbox.get_xbox_status()
-print(xbox.done)
+
+# xbox = XBOX_class()
+# xbox.initialize_xbox()
+# while True:
+#     xbox.get_xbox_status()
+#     print(xbox.joystick,xbox.GUID,xbox.FX_up)
+
 # Test End.
 ##########################
