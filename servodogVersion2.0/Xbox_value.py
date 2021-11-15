@@ -170,14 +170,14 @@ class XBOX_class(object):
                     self.axis_1 = axis
                 if i == 2:
                     self.L_step = axis
-                    print("L Step  ",self.L_step)
+                    # print("L Step  ",self.L_step)
                 if i == 3:
                     self.axis_3 = axis
                 if i == 4:
                     self.axis_4 = axis
                 if i == 5:
                     self.R_step = axis
-                    print("R Step  ",self.R_step)
+                    # print("R Step  ",self.R_step)
 
             # print("Stick 1  (%f,%f)  \n" % (self.axis_0, self.axis_1))
             # print(" Left_Step  %f  \n" % self.L_step)

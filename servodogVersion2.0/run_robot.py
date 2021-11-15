@@ -24,18 +24,21 @@ import time
 ## create a thread to access the XBOX status
 
 def XBOX_access(output_queue_1):
-    print("Thread - 3 - XBOX access")
+    # print("Thread - 3 - XBOX access")
     XBOX_device = XBOX_class()
     XBOX_device.initialize_xbox()
 
     while True:
         command = XBOX_device.get_xbox_status()
         output_queue_1.put(command)
+
+        if stop_threads == True:
+            break
     
 ### create a thread to do something  based on the XBOX status
 
 def XBOX_command(input_queue_1):
-    print("Thread - 4 - XBOX command")
+    # print("Thread - 4 - XBOX command")
     # Hardware = Hardware_Class()
     # Hardware.initialize_leg_pwm()
     
@@ -96,9 +99,11 @@ def XBOX_command(input_queue_1):
 
         # Hardware.send_io_pwm(21,Pwm)
         
-
+        if stop_threads == True:
+            break
 
         # print("Thread - 2 is running :",command)
+        return command
 
 
 
@@ -110,7 +115,7 @@ q_lines = []
 ### Create a data producer, such as acquire the data from IMU sensor
 
 def IMU_data_producer(output_queue):
-    print("Thread 2 - IMU data producer")
+    # print("Thread 2 - IMU data producer")
     angle_list = np.zeros([1000,3])
 
     # Initialize the IMU class
@@ -129,12 +134,15 @@ def IMU_data_producer(output_queue):
         
         # Put out the data for IMU_plotting threading
         output_queue.put(angle_list)
+
+        if stop_threads == True:
+            break
     
     
 ## Create a data consumer, such as plotting the IMU data
 
 def IMU_plotting(input_queue):
-    print("Thread 1 - XBOX data access")
+    # print("Thread 1 - XBOX data access")
 
     angles = input_queue.get()
         
@@ -153,7 +161,11 @@ def IMU_plotting(input_queue):
 
 def main():
 
-    global q_lines 
+    global times
+    times = 200
+    global q_lines
+    global stop_threads
+    stop_threads = False
 
     # initialize the IMU data
     q_init = np.zeros([1000,3])
@@ -169,8 +181,8 @@ def main():
         plt.ylabel('{}/deg'.format(angle_name[i]))
         plt.ylim([-180,180])
 
-    plt.xlabel('simulation steps')
-    fig.legend([''],loc='lower center')
+    plt.xlabel('IMU data frames')
+    fig.legend(['IMU data'],loc='upper center')
     fig.tight_layout()
     plt.draw()  
 
@@ -193,8 +205,10 @@ def main():
     t4.start()
 
     ### main Thread -- update the figure for IMU data plotting
+    tick1 = time.time()
 
-    while True:
+    for i in range(times):
+
         angle = IMU_plotting(input_queue=q1)
         # print("Angle type:",type(angle))
         # print("Q_lines type:",type(q_lines))
@@ -205,5 +219,14 @@ def main():
         plt.draw()
         plt.pause(0.001)
 
-        
+        if i == times-1:
+            stop_threads = True
+
+        if stop_threads == True:
+            break
+
+    tick2 = time.time()
+
+    print("Time:",tick2-tick1)
+
 main()
