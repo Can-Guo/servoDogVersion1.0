@@ -98,8 +98,8 @@ class XBOX_class(object):
         # print("number of hats:", self.hats)
 
         # Get the power level of the joystick
-        self.power = self.joystick.get_power_level()
-        print("Power Level : " , self.power)
+        # self.power = self.joystick.get_power_level()
+        # print("Power Level : " , self.power)
         # There are 11 buttons in the XBOX joystick controller
         
         self.A = 0.
@@ -130,8 +130,8 @@ class XBOX_class(object):
 
 
         # Get the GUID of the joystick
-        self.GUID = self.joystick.get_guid()
-        print("GUID of the XBOX : " , self.GUID)
+        # self.GUID = self.joystick.get_guid()
+        # print("GUID of the XBOX : " , self.GUID)
 
         print("Initialization of the XBOX is done!")
 

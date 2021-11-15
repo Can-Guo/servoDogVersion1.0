@@ -4,7 +4,8 @@ LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
 LastEditTime: 2021-11-11 05:01:18
 FilePath: /servoDogVersion1.0/servodogVersion2.0/run_robot.py
 '''
-import numpy as np 
+import numpy as np
+from numpy.lib.function_base import angle 
 import pigpio 
 from Xbox_value import XBOX_class
 from IMU_class import IMU_class 
@@ -23,7 +24,7 @@ import time
 ## create a thread to access the XBOX status
 
 def XBOX_access(output_queue_1):
-    print("Thread - 1 ")
+    print("Thread - 3 - XBOX access")
     XBOX_device = XBOX_class()
     XBOX_device.initialize_xbox()
 
@@ -31,20 +32,20 @@ def XBOX_access(output_queue_1):
         command = XBOX_device.get_xbox_status()
         output_queue_1.put(command)
     
-## create a thread to do something  based on the XBOX status
+### create a thread to do something  based on the XBOX status
 
 def XBOX_command(input_queue_1):
-    print("Thread - 2 ")
-    Hardware = Hardware_Class()
+    print("Thread - 4 - XBOX command")
+    # Hardware = Hardware_Class()
     # Hardware.initialize_leg_pwm()
     
-    Hardware.initialize_usrl_pwm()
-    time.sleep(5)
+    # Hardware.initialize_usrl_pwm()
+    # time.sleep(5)
     
-    Hardware.usrl_pwm.T200_power_scale = POWER[4]
+    # Hardware.usrl_pwm.T200_power_scale = POWER[4]
 
-    Hardware.send_io_pwm(20,1560)
-    Hardware.send_io_pwm(21,1560)
+    # Hardware.send_io_pwm(20,1560)
+    # Hardware.send_io_pwm(21,1560)
 
     while True:
         command = input_queue_1.get()
@@ -54,23 +55,23 @@ def XBOX_command(input_queue_1):
         ## Pulse Width: 500 - 1500  -- 2500 (us)
         ### 
 
-        if command.X == 1: 
-            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],2000)
-            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],1500)
+        # if command.X == 1: 
+        #     Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],2000)
+        #     Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],1500)
 
-            print("X:",command.X)
-        elif command.A == 1:
-            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],1500)
-            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],2000)
-            print("A:",command.A)
-        elif command.B == 1:
-            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],1000)
-            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],500)
-            print("B:",command.B)
-        elif command.Y == 1:
-            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],500)
-            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],1000)
-            print("Y:",command.Y)
+        #     print("X:",command.X)
+        # elif command.A == 1:
+        #     Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],1500)
+        #     Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],2000)
+        #     print("A:",command.A)
+        # elif command.B == 1:
+        #     Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],1000)
+        #     Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],500)
+        #     print("B:",command.B)
+        # elif command.Y == 1:
+        #     Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],500)
+        #     Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],1000)
+        #     print("Y:",command.Y)
 
         ### USRL T200 control based on the value of L_step
         # -1 ->  0  ->   1
@@ -78,22 +79,22 @@ def XBOX_command(input_queue_1):
         # 1500  ->  1700  ->  1900
         # Power scaler is a constant used to limited the power of the T200
 
-        Power = Hardware.usrl_pwm.T200_power_scale
-        print("Power:",Power)
+        # Power = Hardware.usrl_pwm.T200_power_scale
+        # print("Power:",Power)
 
-        if command.L_step == 0 :
-            Pwm = 1500 + 200 * Power
-        else:
-            Pwm = (1500 + (int)(command.L_step + 1) * (400/2.0) * Power)
+        # if command.L_step == 0 :
+        #     Pwm = 1500 + 200 * Power
+        # else:
+        #     Pwm = (1500 + (int)(command.L_step + 1) * (400/2.0) * Power)
 
-        print("PWM:",(int)(Pwm))
+        # print("PWM:",(int)(Pwm))
 
         # for i in range(2):
             # Hardware.send_io_pwm(Hardware.usrl_pwm.T200_pins[i],Pwm)
 
         # time.sleep(5)
 
-        Hardware.send_io_pwm(21,Pwm)
+        # Hardware.send_io_pwm(21,Pwm)
         
 
 
@@ -106,10 +107,10 @@ def XBOX_command(input_queue_1):
 
 q_lines = []
 
-## Create a data producer, such as acquire the data from IMU sensor
+### Create a data producer, such as acquire the data from IMU sensor
 
 def IMU_data_producer(output_queue):
-    
+    print("Thread 2 - IMU data producer")
     angle_list = np.zeros([1000,3])
 
     # Initialize the IMU class
@@ -133,6 +134,25 @@ def IMU_data_producer(output_queue):
 ## Create a data consumer, such as plotting the IMU data
 
 def IMU_plotting(input_queue):
+    print("Thread 1 - XBOX data access")
+
+    angles = input_queue.get()
+        
+        # update the figure with the IMU data
+    
+        # for i in range(3):
+        #     q_lines[i].set_ydata(angles[:,i])
+
+        # plt.draw()
+        # plt.pause(0.001)
+
+    return angles
+
+
+
+
+def main():
+
     global q_lines 
 
     # initialize the IMU data
@@ -152,43 +172,38 @@ def IMU_plotting(input_queue):
     plt.xlabel('simulation steps')
     fig.legend([''],loc='lower center')
     fig.tight_layout()
-    plt.draw()
+    plt.draw()  
 
+    ### Create FIFO Queue for mult-threading 
+    q1 = Queue()
+    t1 = Thread(target=IMU_plotting,args=(q1,))
+    t2 = Thread(target=IMU_data_producer,args=(q1,))
 
-    
+    q2 = Queue()
+    t3 = Thread(target=XBOX_access,args=(q2,))
+    t4 = Thread(target=XBOX_command,args=(q2,))
+
+    # pi = pigpio.pi()
+
+    ### Start multi-threading
+    t1.start()
+    t2.start()
+
+    t3.start()
+    t4.start()
+
+    ### main Thread -- update the figure for IMU data plotting
 
     while True:
-        # retrieve IMU data
-        angles = input_queue.get()
-        
-        # update the figure with the IMU data
-    
+        angle = IMU_plotting(input_queue=q1)
+        # print("Angle type:",type(angle))
+        # print("Q_lines type:",type(q_lines))
+
         for i in range(3):
-            q_lines[i].set_ydata(angles[:,i])
+            q_lines[i].set_ydata(angle[:,i])
 
         plt.draw()
         plt.pause(0.001)
 
-
-
-
-def main():
-    
-
-    q = Queue()
-    # t1 = Thread(target=IMU_plotting,args=(q,))
-    # t2 = Thread(target=IMU_data_producer,args=(q,))
-
-    t3 = Thread(target=XBOX_access,args=(q,))
-    t4 = Thread(target=XBOX_command,args=(q,))
-
-    # pi = pigpio.pi()
-
-
-    # t1.start()
-    # t2.start()
-    t3.start()
-    t4.start()
-
-
+        
 main()
