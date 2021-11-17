@@ -1,7 +1,7 @@
 '''
 Date: 2021-11-10 22:44:35
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-11 03:39:26
+LastEditTime: 2021-11-17 22:29:11
 FilePath: /servodogVersion2.0/Hardware_Config.py
 '''
 from numpy.core.defchararray import not_equal
@@ -104,4 +104,12 @@ class Hardware_Class:
 
         return 
 
+
+
+# ## standing with home position
+
+Hardware = Hardware_Class()
+
+# while True:
+Hardware.initialize_leg_pwm()
 

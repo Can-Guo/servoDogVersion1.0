@@ -1,8 +1,8 @@
 '''
 Date: 2021-11-10 22:17:22
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-11 04:55:53
-FilePath: /servoDogVersion1.0/servodogVersion2.0/initial_pwm.py
+LastEditTime: 2021-11-17 22:38:10
+FilePath: /servodogVersion2.0/initial_pwm.py
 '''
 
 import numpy as np 
@@ -14,8 +14,8 @@ class Leg_PWM_Parameter:
         self.leg_neutral_position = 1500 
         self.leg_range = 2500
         self.leg_pins = np.array([[2,14,18,23],[3,15,27,24],[4,17,22,25]])
-        self.leg_frequency = 100
-        self.leg_home_position = np.array([[1500,1500,1500,1500],[1500,1500,1500,1500],[1500,1500,1500,1500]])
+        self.leg_frequency = 50
+        self.leg_home_position = np.array([[1500,1500,1470,1500],[2000,1500,1050,1500],[1500,1575,1100,1500]])
     
     
 
@@ -30,11 +30,8 @@ class USRL_PWM_Parameter:
 
         self.servo_neutral_position = 1500
         self.servo_range = 2500
-        self.servo_pins = np.array([2,3]) # servo -> 20,21 PIN
+        self.servo_pins = np.array([12,16]) # servo -> 20,21 PIN
         self.servo_frequency = 50
         self.servo_home_position = np.array([1500,1500])
-
-
-
 
 

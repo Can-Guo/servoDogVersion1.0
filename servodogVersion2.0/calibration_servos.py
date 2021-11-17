@@ -1,4 +1,10 @@
 '''
+Date: 2021-11-17 15:01:59
+LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
+LastEditTime: 2021-11-17 16:20:11
+FilePath: /servoDogVersion1.0/servodogVersion2.0/calibration_servos.py
+'''
+'''
 *********************************************************************************************
   *File: calibration_servos.py
   *Project: servodogVersion2.0
@@ -20,15 +26,25 @@ def main(pin):
     pi.set_PWM_frequency(pin,50)
     pi.set_PWM_range(pin,2500)
 
-    while True:
+    # while True:
 
-        pi.set_servo_pulsewidth(pin,1500)
-        time.sleep(2)
-        pi.set_servo_pulsewidth(pin,2000)
-        time.sleep(2)
-        # pi.set_servo_pulsewidth(pin,1000)
-        # time.sleep(2)
+    pi.set_servo_pulsewidth(pin,1000)
+    time.sleep(2)
+    pi.set_servo_pulsewidth(pin,1500)
+    time.sleep(2)
+    pi.set_servo_pulsewidth(pin,2000)
+    time.sleep(2)
 
+
+    pi.set_servo_pulsewidth(pin,1500)
+    time.sleep(2)
+
+    # pi.set_servo_pulsewidth(pin,2000)
+    # time.sleep(2)
+    # pi.set_servo_pulsewidth(pin,1500)
+    # time.sleep(2)
+    # pi.set_servo_pulsewidth(pin,1000)
+    # time.sleep(2)
 
 main(2)
         
