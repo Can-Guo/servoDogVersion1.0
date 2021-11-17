@@ -5,7 +5,6 @@ LastEditTime: 2021-11-11 05:01:18
 FilePath: /servoDogVersion1.0/servodogVersion2.0/run_robot.py
 '''
 import numpy as np
-from numpy.lib.function_base import angle 
 import pigpio 
 from Xbox_value import XBOX_class
 from IMU_class import IMU_class 
@@ -217,7 +216,7 @@ def main():
             q_lines[i].set_ydata(angle[:,i])
 
         plt.draw()
-        plt.pause(0.001)
+        plt.pause(0.0001)
 
         if i == times-1:
             stop_threads = True
@@ -227,6 +226,6 @@ def main():
 
     tick2 = time.time()
 
-    print("Time:",tick2-tick1)
+    print("Running Time:",tick2-tick1)
 
 main()

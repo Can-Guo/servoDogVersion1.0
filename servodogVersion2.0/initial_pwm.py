@@ -15,6 +15,7 @@ class Leg_PWM_Parameter:
         self.leg_range = 2500
         self.leg_pins = np.array([[2,14,18,23],[3,15,27,24],[4,17,22,25]])
         self.leg_frequency = 100
+        self.leg_home_position = np.array([[1500,1500,1500,1500],[1500,1500,1500,1500],[1500,1500,1500,1500]])
     
     
 
@@ -25,11 +26,13 @@ class USRL_PWM_Parameter:
         self.T200_pins = np.array([20,21])  # T200 -> 12,16 PIN
         self.T200_frequency = 100
         self.T200_power_scale = POWER[0]
+        self.T200_home_position = np.array([1500,1500])
 
         self.servo_neutral_position = 1500
         self.servo_range = 2500
         self.servo_pins = np.array([2,3]) # servo -> 20,21 PIN
         self.servo_frequency = 50
+        self.servo_home_position = np.array([1500,1500])
 
 
 
