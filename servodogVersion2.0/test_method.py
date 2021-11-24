@@ -5,8 +5,8 @@ LastEditTime: 2021-11-10 22:32:56
 FilePath: /servoDogVersion1.0/servodogVersion2.0/test_method.py
 '''
 
-from enum import Enum
 
-Power = Enum("Power",([0.2,0.5]))
-
-print(Power(1))
+# a = 5970985942992911
+# b = 35184372088832
+# c = 1237940039285380274899124224
+# print(a/b)
