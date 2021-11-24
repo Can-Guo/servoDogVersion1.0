@@ -85,31 +85,69 @@ class Hardware_Class:
 
     def angle_2_duty_cycle(angle):
         
-        '''
+        ''' for Xunlongzhe Servo 
         deg :   0 --- 180 --- 360 (deg)
         duty:   5% -- 15% --- 25% (deg)
+        '''
+
+        return 
+
+
+    def angle_delta_2_pulse_width(angle_delta=0):
+
+        ''' for Xunlongzhe Servo 
+        deg :   0 --- 180 --- 360 (deg)
+        width:  500 - 1500 -- 2500 (us)
+        '''
+
+        return angle_delta * 1000 / 180
+
+
+    def force_2_pulse_width(force):
+        ''' for T200 Thruster
+        deg :   0 --- 180 --- 360 (deg)
         width:  500 - 1500 -- 2500 (us)
         '''
 
         return 
 
 
-    def angle_2_pulse_width(angle):
 
-        return 
-
-
-    def force_2_pulse_width(force):
-
-
-        return 
-
-
-
-# ## standing with home position
+## standing with home position
 
 Hardware = Hardware_Class()
-
-# while True:
 Hardware.initialize_leg_pwm()
+
+## leg locomotion after initialize the leg position
+import numpy as np 
+from Kinematics import Kinematics_class
+
+Kinematics = Kinematics_class()
+
+# 1. generate a bezier trajectory
+x,z = Kinematics.bezier_generate()
+x_leg = x - 120/np.sqrt(2)
+z_leg = z - 240/np.sqrt(2) - 20
+
+
+# 2. inverse kinematics to get the joint angle of the leg
+
+q2_list = []
+q3_list = []
+
+for i in range(50):
+    q2,q3 = Kinematics.inverse_kinematics_geo(x_leg[i],-60,z_leg[i])
+    q2_list.append(q2_list*180/np.pi)
+    q3_list.append(q3_list*180/np.pi)
+
+# 3. compute the delta(pulse width) compare to the home position of joints
+
+for i in range(len(q2_list)):
+    q2_pulse_width_delta = Hardware_Class.angle_delta_2_pulse_width(q2_list[i])
+    q3_pulse_width_delta = Hardware_Class.angle_delta_2_pulse_width(q3_list[i])
+
+print(q2_pulse_width_delta)
+
+
+
 
