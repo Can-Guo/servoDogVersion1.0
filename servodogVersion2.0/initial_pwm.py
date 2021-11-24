@@ -1,7 +1,7 @@
 '''
 Date: 2021-11-10 22:17:22
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-17 22:38:10
+LastEditTime: 2021-11-25 02:26:00
 FilePath: /servodogVersion2.0/initial_pwm.py
 '''
 
@@ -15,7 +15,7 @@ class Leg_PWM_Parameter:
         self.leg_range = 2500
         self.leg_pins = np.array([[2,14,18,23],[3,15,27,24],[4,17,22,25]])
         self.leg_frequency = 50
-        self.leg_home_position = np.array([[1500,1500,1470,1500],[2000,1500,1050,1500],[1500,1575,1100,1500]])
+        self.leg_home_position = np.array([[1500,1500,1470,1500],[2000,1500,1050,1500],[1250,1000,1125,1280]])
     
     
 

@@ -1,4 +1,10 @@
 '''
+Date: 2021-11-17 15:01:59
+LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
+LastEditTime: 2021-11-17 22:47:04
+FilePath: /servodogVersion2.0/initial_robot.py
+'''
+'''
 *********************************************************************************************
   *File: initial_robot.py
   *Project: servodogVersion2.0
@@ -24,5 +30,6 @@ class Initial_Robot:
     def initial_robot(self):
         self.hardware_class.initialize_leg_pwm()
         self.hardware_class.initialize_usrl_pwm()
+    
     
     

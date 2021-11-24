@@ -1,13 +1,13 @@
 '''
 Date: 2021-11-10 22:44:35
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-17 22:29:11
+LastEditTime: 2021-11-25 02:36:55
 FilePath: /servodogVersion2.0/Hardware_Config.py
 '''
 from numpy.core.defchararray import not_equal
 import pigpio 
 from initial_pwm import Leg_PWM_Parameter, USRL_PWM_Parameter
-
+import time 
 class Hardware_Class:
     def __init__(self):
         # Before you config, run "sudo pigpiod" in your terminal
@@ -30,6 +30,7 @@ class Hardware_Class:
                 self.pi.set_servo_pulsewidth(
                     self.leg_pwm.leg_pins[axis_index, leg_index], self.leg_pwm.leg_home_position[axis_index,leg_index]
                 )
+        time.sleep(2)
         return 
     
 
@@ -93,14 +94,14 @@ class Hardware_Class:
         return 
 
 
-    def angle_delta_2_pulse_width(angle_delta=0):
+    def angle_delta_2_pulse_width(self,angle_delta=0):
 
         ''' for Xunlongzhe Servo 
         deg :   0 --- 180 --- 360 (deg)
         width:  500 - 1500 -- 2500 (us)
         '''
 
-        return angle_delta * 1000 / 180
+        return (int)(angle_delta * 1000 / 180)
 
 
     def force_2_pulse_width(force):
@@ -127,7 +128,7 @@ Kinematics = Kinematics_class()
 # 1. generate a bezier trajectory
 x,z = Kinematics.bezier_generate()
 x_leg = x - 120/np.sqrt(2)
-z_leg = z - 240/np.sqrt(2) - 20
+z_leg = z - 240/np.sqrt(2) 
 
 
 # 2. inverse kinematics to get the joint angle of the leg
@@ -137,16 +138,39 @@ q3_list = []
 
 for i in range(50):
     q2,q3 = Kinematics.inverse_kinematics_geo(x_leg[i],-60,z_leg[i])
-    q2_list.append(q2_list*180/np.pi)
-    q3_list.append(q3_list*180/np.pi)
+    q2_list.append(q2*180/np.pi)
+    q3_list.append(q3*180/np.pi)
 
 # 3. compute the delta(pulse width) compare to the home position of joints
 
-for i in range(len(q2_list)):
-    q2_pulse_width_delta = Hardware_Class.angle_delta_2_pulse_width(q2_list[i])
-    q3_pulse_width_delta = Hardware_Class.angle_delta_2_pulse_width(q3_list[i])
+q2_pulse_width_delta = []
+q3_pulse_width_delta = []
 
-print(q2_pulse_width_delta)
+for i in range(len(q2_list)):
+    q2_pulse_width_delta.append(1500+Hardware.angle_delta_2_pulse_width(q2_list[i]))
+    q3_pulse_width_delta.append(780+Hardware.angle_delta_2_pulse_width(q3_list[i]))
+
+# print("q2",q2_pulse_width_delta)
+# print("q3",q3_pulse_width_delta)
+
+# for i in range(len(q2_pulse_width_delta)):
+#     Hardware.send_io_pwm_width(24,q2_pulse_width_delta[i])
+#     Hardware.send_io_pwm_width(25,q3_pulse_width_delta[i])
+#     time.sleep(0.25)
+
+# for i in range(len(q2_pulse_width_delta)):
+#     Hardware.send_io_pwm_width(3,q2_pulse_width_delta[i])
+#     Hardware.send_io_pwm_width(4,q3_pulse_width_delta[i])
+#     time.sleep(0.1)
+
+# for i in range(len(q2_pulse_width_delta)):
+#     Hardware.send_io_pwm_width(15,q2_pulse_width_delta[i])
+#     Hardware.send_io_pwm_width(17,q3_pulse_width_delta[i])
+#     time.sleep(0.4)
+
+
+
+# print(q2_pulse_width_delta)
 
 
 
