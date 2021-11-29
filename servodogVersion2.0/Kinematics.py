@@ -53,10 +53,10 @@ class Kinematics_class():
         x_axis = np.linspace(0,240/np.sqrt(2),50)
         z_axis = curve(x_axis)
 
-        # plt.figure(figsize=(8,8))
-        # plt.scatter(x_axis,z_axis,marker='o',color ='r')
+        plt.figure(figsize=(8,8))
+        plt.scatter(x_axis,z_axis,marker='o',color ='r')
 
-        # curve1.plot(100,color = 'b',ax=plt)
+        curve1.plot(100,color = 'b',ax=plt)
 
 
         return x_axis,z_axis
@@ -111,11 +111,11 @@ class Kinematics_class():
         if (np.sqrt(x**2+z**2) > (self.L2 + self.L3)):
             print("This point is out of workspace of the robot")
             pass
-        elif (np.sqrt(x**2+z**2) < (self.L2)):
-            print("Warning! This point is not recommend! Please reconsider another point!")
-            pass
+        # elif (np.sqrt(x**2+z**2) < (self.L2)):
+            # print("Warning! This point is not recommend! Please reconsider another point!")
+            # pass
         elif z>0:
-            print("Warning! This point is not recommend! Please reconsider another point!")
+            print("Warning! z>0! This point is not recommend! Please reconsider another point!")
             pass
         else:
             L_xz = np.sqrt(x**2+z**2)
@@ -174,7 +174,7 @@ class Kinematics_class():
         theta = np.linspace(theta_start,theta_end,100)
         x = R * np.cos(theta)
         y = R * np.sin(theta)
-        # plt.plot(x,y,'g--')
+        plt.plot(x,y,'g--')
         return x,y
 
 
@@ -182,34 +182,34 @@ class Kinematics_class():
 # Test the Kinematics Class --> BEGIN
 
 
-# Kine = Kinematics_class()
-# x,z = Kine.bezier_generate()
-# x_leg = x - 120/np.sqrt(2)
-# z_leg = z - 240/np.sqrt(2) - 20
+Kine = Kinematics_class()
+x,z = Kine.bezier_generate()
+x_leg = x - 120/np.sqrt(2)
+z_leg = z - 240/np.sqrt(2) + 10
 
-# # plt.plot(x_leg,z_leg,'c-')
-# Kine.circle(120,0,2*np.pi)
-# Kine.circle(240,0,2*np.pi)
+plt.plot(x_leg,z_leg,'c-')
+Kine.circle(120,0,2*np.pi)
+Kine.circle(240,0,2*np.pi)
 
-# x_plot = []
-# z_plot = []
-# q2_plot = []
-# q3_plot = []
+x_plot = []
+z_plot = []
+q2_plot = []
+q3_plot = []
 
-# for i in range(50):
-#     q2,q3 = Kine.inverse_kinematics_geo(x_leg[i],-60,z_leg[i])
-#     q2_plot.append(q2*180/np.pi)
-#     q3_plot.append(q3*180/np.pi)
-#     x1,z1 = Kine.forward_kinematics_2R(q2,q3)
-#     x_plot.append(x1)
-#     z_plot.append(z1)
+for i in range(50):
+    q2,q3 = Kine.inverse_kinematics_geo(x_leg[i],-60,z_leg[i])
+    q2_plot.append(q2*180/np.pi)
+    q3_plot.append(q3*180/np.pi)
+    x1,z1 = Kine.forward_kinematics_2R(q2,q3)
+    x_plot.append(x1)
+    z_plot.append(z1)
 
-# plt.scatter(x_plot,z_plot,marker='*',color ='g')
-# t = np.linspace(1,51,50)
+plt.scatter(x_plot,z_plot,marker='*',color ='g')
+t = np.linspace(1,51,50)
 
-# plt.plot(t,q2_plot,'b-.')
-# plt.plot(t,q3_plot,'y-.')
-# plt.show()
+plt.plot(t,q2_plot,'b-.')
+plt.plot(t,q3_plot,'y-.')
+plt.show()
 
 # Test the Kinematics Class --> END
 #############################################
