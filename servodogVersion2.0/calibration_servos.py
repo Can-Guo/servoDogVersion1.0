@@ -1,8 +1,8 @@
 '''
 Date: 2021-11-17 15:01:59
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-17 16:20:11
-FilePath: /servoDogVersion1.0/servodogVersion2.0/calibration_servos.py
+LastEditTime: 2021-11-29 23:00:53
+FilePath: /servodogVersion2.0/calibration_servos.py
 '''
 '''
 *********************************************************************************************
@@ -28,23 +28,24 @@ def main(pin):
 
     # while True:
 
-    pi.set_servo_pulsewidth(pin,1000)
-    time.sleep(2)
-    pi.set_servo_pulsewidth(pin,1500)
-    time.sleep(2)
-    pi.set_servo_pulsewidth(pin,2000)
-    time.sleep(2)
+    for i in range(3):
 
+      pi.set_servo_pulsewidth(pin,500)
+      time.sleep(4)
+      pi.set_servo_pulsewidth(pin,1450)
+      time.sleep(2)
+      pi.set_servo_pulsewidth(pin,500)
+      time.sleep(4)
 
-    pi.set_servo_pulsewidth(pin,1500)
-    time.sleep(2)
+    # pi.set_servo_pulsewidth(pin, 1500)                     
+    # time.sleep(2)
 
     # pi.set_servo_pulsewidth(pin,2000)
     # time.sleep(2)
     # pi.set_servo_pulsewidth(pin,1500)
     # time.sleep(2)
-    # pi.set_servo_pulsewidth(pin,1000)
+    # pi.set_servo_pulsewidth(pin,1000)  
     # time.sleep(2)
 
-main(2)
+main(3)
         
