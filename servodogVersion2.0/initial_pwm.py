@@ -1,7 +1,7 @@
 '''
 Date: 2021-11-10 22:17:22
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-25 02:26:00
+LastEditTime: 2021-12-02 03:12:45
 FilePath: /servodogVersion2.0/initial_pwm.py
 '''
 
@@ -30,7 +30,7 @@ class USRL_PWM_Parameter:
 
         self.servo_neutral_position = 1500
         self.servo_range = 2500
-        self.servo_pins = np.array([12,16]) # servo -> 12, 16 PIN
+        self.servo_pins = np.array([2,3]) # servo -> 12, 16 PIN
         self.servo_frequency = 50
         self.servo_home_position = np.array([1500,1500])
 

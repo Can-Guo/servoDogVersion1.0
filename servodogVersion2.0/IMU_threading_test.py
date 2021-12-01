@@ -1,4 +1,10 @@
 '''
+Date: 2021-11-10 22:10:01
+LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
+LastEditTime: 2021-12-02 02:18:47
+FilePath: /servodogVersion2.0/IMU_threading_test.py
+'''
+'''
 *********************************************************************************************
   *File: IMU_threading_test.py
   *Project: Python_multiThread
@@ -63,7 +69,7 @@ def IMU_plotting(input_queue):
         plt.ylim([-180,180])
 
     plt.xlabel('simulation steps')
-    fig.legend([''],loc='lower center')
+    fig.legend([''],loc='upper center')
     fig.tight_layout()
     plt.draw()
 

@@ -1,11 +1,11 @@
 '''
 Date: 2021-11-10 22:11:41
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-11 05:01:18
-FilePath: /servoDogVersion1.0/servodogVersion2.0/run_robot.py
+LastEditTime: 2021-12-02 04:38:24
+FilePath: /servodogVersion2.0/run_robot.py
 '''
 import numpy as np
-import pigpio 
+# import pigpio 
 from Xbox_value import XBOX_class
 from IMU_class import IMU_class 
 from Hardware_Config import Hardware_Class
@@ -42,9 +42,9 @@ def XBOX_command(input_queue_1):
     # Hardware.initialize_leg_pwm()
     
     Hardware.initialize_usrl_pwm()
-    time.sleep(10)
+    time.sleep(5)
     
-    Hardware.usrl_pwm.T200_power_scale = POWER[1]
+    Hardware.usrl_pwm.T200_power_scale = POWER[2]
 
     # Hardware.send_io_pwm(20,1560)
     # Hardware.send_io_pwm(21,1560)
@@ -74,10 +74,22 @@ def XBOX_command(input_queue_1):
         #     Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],500)
         #     Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],1000)
         #     print("Y:",command.Y)
-        if command.usrl_servo_command >0:
-            print(command.usrl_servo_command)
-            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],)
-            pass
+        print("Angle:",(command.usrl_servo_command))
+        if 360.0 > command.usrl_servo_command >= 180.0:
+            servo_0 = (int) (500 + (command.usrl_servo_command - 180) * (1000 / 180.0))
+            servo_1 = (int) (2500 - (command.usrl_servo_command - 180) * (1000 / 180.0))
+        elif 180.0 > command.usrl_servo_command >= 0.0:
+            servo_0 = (int) (1500 + command.usrl_servo_command * (1000 / 180.0))
+            servo_1 = (int) (1500 - command.usrl_servo_command * (1000 / 180.0))
+        
+        print("Servo 1 %d \t Servo 2 %d \t" % (servo_0,servo_1))
+
+        Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],servo_0)
+        Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],servo_1)
+        # Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],1500)
+        # Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],1500)
+
+        
 
         
 
@@ -94,11 +106,13 @@ def XBOX_command(input_queue_1):
             Pwm = (int)(1500 + (200 * Power))
         else:
             Pwm = (int)(1500 + (command.L_step + 1) * (400/2.0) * Power)
+        pass
+
 
         # print("PWM:",(int)(Pwm))
 
-        # for i in range(2):
-        #     Hardware.send_io_pwm(Hardware.usrl_pwm.T200_pins[i],Pwm)
+        for i in range(2):
+            Hardware.send_io_pwm_width(Hardware.usrl_pwm.T200_pins[i],Pwm)
 
         # time.sleep(5)
 
@@ -181,7 +195,13 @@ def main():
 
     for i in range(3):
         plt.subplot(3,1,i+1)
-        q_line, = plt.plot(q_init[:,i],'-')
+        if i == 0:
+            q_line, = plt.plot(q_init[:,i],'r-')
+        elif i == 1:
+            q_line, = plt.plot(q_init[:,i],'b-')
+        elif i == 2:
+            q_line, = plt.plot(q_init[:,i],'g-')
+            
         q_lines.append(q_line)
         plt.ylabel('{}/deg'.format(angle_name[i]))
         plt.ylim([-180,180])

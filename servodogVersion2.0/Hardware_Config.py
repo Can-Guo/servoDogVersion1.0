@@ -1,10 +1,10 @@
 '''
 Date: 2021-11-10 22:44:35
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-25 02:36:55
+LastEditTime: 2021-12-02 02:30:41
 FilePath: /servodogVersion2.0/Hardware_Config.py
 '''
-from numpy.core.defchararray import not_equal
+
 import pigpio 
 from initial_pwm import Leg_PWM_Parameter, USRL_PWM_Parameter
 import time 
@@ -116,39 +116,39 @@ class Hardware_Class:
 
 ## standing with home position
 
-Hardware = Hardware_Class()
-Hardware.initialize_leg_pwm()
+# Hardware = Hardware_Class()
+# Hardware.initialize_leg_pwm()
 
-## leg locomotion after initialize the leg position
-import numpy as np 
-from Kinematics import Kinematics_class
+# ## leg locomotion after initialize the leg position
+# import numpy as np 
+# from Kinematics import Kinematics_class
 
-Kinematics = Kinematics_class()
+# Kinematics = Kinematics_class()
 
-# 1. generate a bezier trajectory
-x,z = Kinematics.bezier_generate()
-x_leg = x - 120/np.sqrt(2)
-z_leg = z - 240/np.sqrt(2) 
+# # 1. generate a bezier trajectory
+# x,z = Kinematics.bezier_generate()
+# x_leg = x - 120/np.sqrt(2)
+# z_leg = z - 240/np.sqrt(2) 
 
 
-# 2. inverse kinematics to get the joint angle of the leg
+# # 2. inverse kinematics to get the joint angle of the leg
 
-q2_list = []
-q3_list = []
+# q2_list = []
+# q3_list = []
 
-for i in range(50):
-    q2,q3 = Kinematics.inverse_kinematics_geo(x_leg[i],-60,z_leg[i])
-    q2_list.append(q2*180/np.pi)
-    q3_list.append(q3*180/np.pi)
+# for i in range(50):
+#     q2,q3 = Kinematics.inverse_kinematics_geo(x_leg[i],-60,z_leg[i])
+#     q2_list.append(q2*180/np.pi)
+#     q3_list.append(q3*180/np.pi)
 
-# 3. compute the delta(pulse width) compare to the home position of joints
+# # 3. compute the delta(pulse width) compare to the home position of joints
 
-q2_pulse_width_delta = []
-q3_pulse_width_delta = []
+# q2_pulse_width_delta = []
+# q3_pulse_width_delta = []
 
-for i in range(len(q2_list)):
-    q2_pulse_width_delta.append(1500+Hardware.angle_delta_2_pulse_width(q2_list[i]))
-    q3_pulse_width_delta.append(780+Hardware.angle_delta_2_pulse_width(q3_list[i]))
+# for i in range(len(q2_list)):
+#     q2_pulse_width_delta.append(1500+Hardware.angle_delta_2_pulse_width(q2_list[i]))
+#     q3_pulse_width_delta.append(780+Hardware.angle_delta_2_pulse_width(q3_list[i]))
 
 # print("q2",q2_pulse_width_delta)
 # print("q3",q3_pulse_width_delta)

@@ -1,7 +1,7 @@
 '''
 Date: 2021-08-10 15:00:51
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-11-11 03:16:42
+LastEditTime: 2021-12-02 02:57:33
 FilePath: /servodogVersion2.0/Xbox_value.py
 Based on Source at pygame.joystick module demo -->
 http://www.pygame.org/docs/ref/joystick.html
@@ -39,9 +39,11 @@ class XBOX_class(object):
         self.axis_0 = 0.
         self.axis_1 = 0.
         self.L_step = -1.
-        self.axis_2 = 0.
         self.axis_3 = 0.
+        self.axis_4 = 0.
         self.R_step = -1.
+
+        self.usrl_servo_command = 0.0
 
 
 
@@ -73,7 +75,7 @@ class XBOX_class(object):
             print("No Joystick is connected!")
             
 
-        elif joystick_count ==1 :
+        elif joystick_count >=1 :
             self.joystick = pygame.joystick.Joystick(0)
             self.joystick.init()
             self.name = self.joystick.get_name()
@@ -81,8 +83,8 @@ class XBOX_class(object):
             print("Joystick ID : ",self.joystick)
             print("The Name of the Joystick : ",self.name)
             
-        elif joystick_count >= 2 :
-            print("The XBOX class has no compatible with more than 1 joystick, yet!")
+        # elif joystick_count >= 2 :
+            # print("The XBOX class has no compatible with more than 1 joystick, yet!")
             
         
         # Get the number of axes
@@ -173,16 +175,18 @@ class XBOX_class(object):
                     self.axis_1 = axis
                     # print("1:",self.axis_1)
                 if i == 2:
-                    self.axis_2 = axis
-                    # print("2:",self.axis_2)
+                    self.L_step = axis
+                    # print("2:",self.L_step)
                 if i == 3:
                     self.axis_3 = axis
                     # print("3:",self.axis_3)
                 if i == 4:
-                    self.R_step = axis
+                    # print(i)
+                    self.axis_4 = axis
+                    # print("4:",self.axis_4)
                     # print("R Step:",self.R_step)
                 if i == 5:
-                    self.L_step = axis
+                    self.R_step = axis
                     # print("L Step  ",self.L_step)
 
 
@@ -287,7 +291,7 @@ class XBOX_class(object):
             self.usrl_servo_command = self.usrl_servo_angle(self.axis_0, self.axis_1)
                     
                     
-            clock.tick(10)
+            # clock.tick(10)
         
         # return self.axis_0, self.axis_1
         return self
@@ -300,18 +304,37 @@ class XBOX_class(object):
         '''
         axis_0_mode = np.abs(axis_0)
         axis_1_mode = np.abs(axis_1)
-        
-        value = (axis_1_mode/axis_0_mode)
 
         
-        if axis_0 > 0 and axis_1 > 0:
-            angle = np.arctan(1/value) + np.pi/2
-        elif axis_0 < 0 and axis_1 > 0:
-            angle = np.arctan(value) + 0.0
-        elif axis_0 > 0 and axis_1 < 0:
-            angle = np.arctan(value) + np.pi
-        elif axis_0 < 0 and axis_1 < 0:
-            angle = - np.arctan(value) + 2*np.pi
+        
+        if np.abs(axis_0) < 0.1 and np.abs(axis_1) < 0.1:
+            value = 0
+            angle = 0
+
+        elif (np.abs(axis_0) < 0.1 and np.abs(axis_1) > 0.98):
+            if (axis_1) > 0:
+                angle = np.pi/2
+            else:
+                angle = 3*np.pi/2
+                
+        elif (np.abs(axis_0) > 0.98 and np.abs(axis_1) < 0.1):
+            if (axis_0) > 0:
+                angle = np.pi
+            else:
+                angle = 0.0
+
+        else:
+            value = (axis_1_mode/axis_0_mode)
+            angle = 0
+        
+            if axis_0 > 0 and axis_1 > 0:
+                angle = np.arctan(1/value) + np.pi/2
+            elif axis_0 < 0 and axis_1 > 0:
+                angle = np.arctan(value) + 0.0
+            elif axis_0 > 0 and axis_1 < 0:
+                angle = np.arctan(value) + np.pi
+            elif axis_0 < 0 and axis_1 < 0:
+                angle = - np.arctan(value) + 2*np.pi
 
         Angle = int(angle*180/np.pi)
         # print("Resove angle %d deg", Angle)
