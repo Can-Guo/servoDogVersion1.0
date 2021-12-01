@@ -22,4 +22,4 @@ class Example(QWidget):
     
     def initUI(self):
         return
-        
+

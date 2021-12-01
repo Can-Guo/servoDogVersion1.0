@@ -23,14 +23,14 @@ class USRL_PWM_Parameter:
     def __init__(self):
         self.T200_neutral_position = 1500
         self.T200_range = 2000
-        self.T200_pins = np.array([20,21])  # T200 -> 12,16 PIN
+        self.T200_pins = np.array([20,21])  # T200 -> 20, 21 PIN
         self.T200_frequency = 100
         self.T200_power_scale = POWER[0]
         self.T200_home_position = np.array([1500,1500])
 
         self.servo_neutral_position = 1500
         self.servo_range = 2500
-        self.servo_pins = np.array([12,16]) # servo -> 20,21 PIN
+        self.servo_pins = np.array([12,16]) # servo -> 12, 16 PIN
         self.servo_frequency = 50
         self.servo_home_position = np.array([1500,1500])
 

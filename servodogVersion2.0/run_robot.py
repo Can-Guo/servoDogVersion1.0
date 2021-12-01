@@ -38,13 +38,13 @@ def XBOX_access(output_queue_1):
 
 def XBOX_command(input_queue_1):
     # print("Thread - 4 - XBOX command")
-    # Hardware = Hardware_Class()
+    Hardware = Hardware_Class()
     # Hardware.initialize_leg_pwm()
     
-    # Hardware.initialize_usrl_pwm()
-    # time.sleep(5)
+    Hardware.initialize_usrl_pwm()
+    time.sleep(10)
     
-    # Hardware.usrl_pwm.T200_power_scale = POWER[4]
+    Hardware.usrl_pwm.T200_power_scale = POWER[1]
 
     # Hardware.send_io_pwm(20,1560)
     # Hardware.send_io_pwm(21,1560)
@@ -74,6 +74,12 @@ def XBOX_command(input_queue_1):
         #     Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],500)
         #     Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],1000)
         #     print("Y:",command.Y)
+        if command.usrl_servo_command >0:
+            print(command.usrl_servo_command)
+            Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],)
+            pass
+
+        
 
         ### USRL T200 control based on the value of L_step
         # -1 ->  0  ->   1
@@ -81,18 +87,18 @@ def XBOX_command(input_queue_1):
         # 1500  ->  1700  ->  1900
         # Power scaler is a constant used to limited the power of the T200
 
-        # Power = Hardware.usrl_pwm.T200_power_scale
-        # print("Power:",Power)
+        Power = Hardware.usrl_pwm.T200_power_scale
+        print("Power:",Power)
 
-        # if command.L_step == 0 :
-        #     Pwm = 1500 + 200 * Power
-        # else:
-        #     Pwm = (1500 + (int)(command.L_step + 1) * (400/2.0) * Power)
+        if command.L_step == 0 :
+            Pwm = (int)(1500 + (200 * Power))
+        else:
+            Pwm = (int)(1500 + (command.L_step + 1) * (400/2.0) * Power)
 
         # print("PWM:",(int)(Pwm))
 
         # for i in range(2):
-            # Hardware.send_io_pwm(Hardware.usrl_pwm.T200_pins[i],Pwm)
+        #     Hardware.send_io_pwm(Hardware.usrl_pwm.T200_pins[i],Pwm)
 
         # time.sleep(5)
 
@@ -102,7 +108,7 @@ def XBOX_command(input_queue_1):
             break
 
         # print("Thread - 2 is running :",command)
-        return command
+        # return command
 
 
 
@@ -147,12 +153,12 @@ def IMU_plotting(input_queue):
         
         # update the figure with the IMU data
     
-        # for i in range(3):
-        #     q_lines[i].set_ydata(angles[:,i])
+    # for i in range(3):
+    #     q_lines[i].set_ydata(angles[:,i])
 
-        # plt.draw()
-        # plt.pause(0.001)
-
+    # plt.draw()
+    # plt.pause(0.001)
+    
     return angles
 
 

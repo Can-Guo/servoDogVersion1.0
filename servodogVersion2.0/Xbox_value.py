@@ -16,7 +16,7 @@ http://www.pygame.org/docs/ref/joystick.html
 
 
 import pygame
-import os,sys 
+import numpy as np 
 
 class XBOX_class(object):
     
@@ -39,8 +39,8 @@ class XBOX_class(object):
         self.axis_0 = 0.
         self.axis_1 = 0.
         self.L_step = -1.
+        self.axis_2 = 0.
         self.axis_3 = 0.
-        self.axis_4 = 0.
         self.R_step = -1.
 
 
@@ -108,9 +108,11 @@ class XBOX_class(object):
         self.Y = 0.
         self.LB = 0.
         self.RB = 0.
-        self.View = 0.
+        self.Share = 0.
         self.Menu = 0.
         self.Disonnect = 0.
+        self.LeftStickPress = 0
+        self.RightStickPress = 0
 
 
         # There is only one hat (0,0) in the XBOX joystick controller
@@ -130,8 +132,8 @@ class XBOX_class(object):
 
 
         # Get the GUID of the joystick
-        # self.GUID = self.joystick.get_guid()
-        # print("GUID of the XBOX : " , self.GUID)
+        self.GUID = self.joystick.get_guid()
+        print("GUID of the XBOX : " , self.GUID)
 
         print("Initialization of the XBOX is done!")
 
@@ -166,72 +168,103 @@ class XBOX_class(object):
                 # print(self.axes)
                 if i == 0:
                     self.axis_0 = axis
+                    # print("0:",self.axis_0)
                 if i == 1:
                     self.axis_1 = axis
+                    # print("1:",self.axis_1)
                 if i == 2:
-                    self.L_step = axis
-                    # print("L Step  ",self.L_step)
+                    self.axis_2 = axis
+                    # print("2:",self.axis_2)
                 if i == 3:
                     self.axis_3 = axis
+                    # print("3:",self.axis_3)
                 if i == 4:
-                    self.axis_4 = axis
-                if i == 5:
                     self.R_step = axis
-                    # print("R Step  ",self.R_step)
+                    # print("R Step:",self.R_step)
+                if i == 5:
+                    self.L_step = axis
+                    # print("L Step  ",self.L_step)
+
 
             # print("Stick 1  (%f,%f)  \n" % (self.axis_0, self.axis_1))
             # print(" Left_Step  %f  \n" % self.L_step)
             # print("Stick 2  (%f,%f)  \n" % (self.axis_3, self.axis_4))
             # print("Right_Step  %f  \n" % self.R_step)
 
+
             # Get the status of the buttons
             for i in range( self.buttons ):
                 button = self.joystick.get_button( i )
                 # print(i,button)
                 if i == 0 and button == 1:
-                    self.A = 1.0
+                    self.A = 1
                     self.B = 0
                     self.X = 0
                     self.Y = 0
-
                     print("A")
+
                 if i == 1 and button == 1:
                     self.A = 0
                     self.B = 1
                     self.X = 0
                     self.Y = 0
                     print("B")
-                if i == 2 and button == 1:
+
+                # if i == 2 and button == 1:
+                # #     self.A = 0
+                # #     self.B = 0
+                # #     self.X = 0
+                # #     self.Y = 0
+                #     print(i)
+
+                if i == 3 and button == 1:
                     self.A = 0
                     self.B = 0
                     self.X = 1
                     self.Y = 0
                     print("X")
-                if i == 3 and button == 1:
+                if i == 4 and button == 1:
                     self.A = 0
                     self.B = 0
                     self.X = 0
                     self.Y = 1
                     print("Y")
-                if i == 4 and button == 1:
+
+                # if i == 5 and button == 1:
+                #     print(i)
+
+                if i == 6 and button == 1:
                     self.LB = 1.0
                     print("LB")
-                if i == 5 and button == 1:
+                if i == 7 and button == 1:
                     self.RB = 1.0
                     print("RB")
-                if i == 6 and button == 1:
-                    self.View = 1.0
-                    print("View")
-                if i == 7 and button == 1:
-                    self.Menu = 1.0
-                    print("Menu")
-                if i == 8 and button == 1:
-                    self.Disonnect = 1.0
-                    print("Stop Connection !")
-                    self.done = True
-                    self.shutdown()
 
-                # print("access A value",self.A)
+                # if i == 8 and button == 1:
+                #     print(i)
+                # if i == 9 and button == 1:
+                #     print(i)
+
+                if i == 10 and button == 1:
+                    self.Share = 1
+                    print("Share")
+                if i == 11 and button == 1:
+                    self.Menu = 1
+                    print("Menu")
+                if i == 12 and button == 1:
+                    self.Disonnect = 1.0
+                    self.done = True
+                    print("Stop Connection !")
+                    self.shutdown()
+                if i == 13 and button == 1:
+                    self.LeftStickPress = 1
+                    print("Left Stick Pressed")
+                    # print(i)
+                if i == 14 and button == 1:
+                    self.RightStickPress = 0
+                    print("Right Stick Pressed")
+                    # print(i)
+
 
             for i in range( self.hats ):
                 hat = self.joystick.get_hat( i )
@@ -250,11 +283,41 @@ class XBOX_class(object):
                     print("FX_down")
                 if hat == (0,0):
                     self.FX_default = 1.0
+            
+            self.usrl_servo_command = self.usrl_servo_angle(self.axis_0, self.axis_1)
                     
                     
             clock.tick(10)
         
+        # return self.axis_0, self.axis_1
         return self
+
+
+    def usrl_servo_angle(self, axis_0, axis_1):
+        '''
+        input: two axes of the joy stick, range [-1,1] for each axis, digital number
+        output: Expected angle of the two servos of USRL, range [0,360], /degree
+        '''
+        axis_0_mode = np.abs(axis_0)
+        axis_1_mode = np.abs(axis_1)
+        
+        value = (axis_1_mode/axis_0_mode)
+
+        
+        if axis_0 > 0 and axis_1 > 0:
+            angle = np.arctan(1/value) + np.pi/2
+        elif axis_0 < 0 and axis_1 > 0:
+            angle = np.arctan(value) + 0.0
+        elif axis_0 > 0 and axis_1 < 0:
+            angle = np.arctan(value) + np.pi
+        elif axis_0 < 0 and axis_1 < 0:
+            angle = - np.arctan(value) + 2*np.pi
+
+        Angle = int(angle*180/np.pi)
+        # print("Resove angle %d deg", Angle)
+
+        return Angle
+
 
     def shutdown(self):
         if self.done == True:
@@ -271,7 +334,6 @@ class XBOX_class(object):
 # xbox.initialize_xbox()
 # while True:
 #     xbox.get_xbox_status()
-#     print(xbox.joystick,xbox.GUID,xbox.FX_up)
 
 # Test End.
 ##########################
