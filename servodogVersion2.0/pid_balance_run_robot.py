@@ -35,8 +35,8 @@ q_lines = []
 def IMU_data_producer(output_queue):
 
 
-    angle_list = np.zeros([1000,3])
-    omega_list = np.zeros([1000,3])
+    angle_list = np.zeros([500,3])
+    omega_list = np.zeros([500,3])
     
     time_sequence = []
     
@@ -99,20 +99,22 @@ if __name__ == '__main__':
     # Hardware.initialize_leg_pwm()
     
     Hardware.initialize_usrl_pwm()
-    time.sleep(5)
+    time.sleep(3)
     
     Hardware.usrl_pwm.T200_power_scale = POWER[2]
 
-
+    Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[0],1000)
+    Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],2050)
+        
 
     global times
-    times = 200
+    times = 1000
 
     global stop_threads
     stop_threads = False
 
     # initialize the IMU data 
-    q_init = np.zeros([1000,6])
+    q_init = np.zeros([500,6])
     ylabel_name = ['Roll','Pitch','Yaw', 'omega_x', 'omega_y', 'omega_z']
 
     # initialize Plot figure
@@ -146,7 +148,7 @@ if __name__ == '__main__':
     fig.tight_layout()
     plt.draw()
 
-
+ 
     ### Create FIFO Queue for mult-threading 
     q1 = Queue()
     t1 = Thread(target=IMU_plotting,args=(q1,))
@@ -158,8 +160,10 @@ if __name__ == '__main__':
 
     ### main thread -- update the figure for IMU data plotting
 
-    Kp = 1.0
-    Kd = 0.1
+    Kp = 20.0
+    Kd = 2.0
+
+    pitch_desired = 0.0
 
     for i in range(times):
 
@@ -176,40 +180,51 @@ if __name__ == '__main__':
         
 
         plt.draw()
-        plt.pause(0.001)
+        plt.pause(0.0001)
 
 
         Power = Hardware.usrl_pwm.T200_power_scale
-        print("Power Scaler:",Power)
+        # print("Power Scaler:",Power)
         
 
-        pitch_last = angle[-2,1]
-        pitch_now  = angle[-1,1]
+        # pitch_last = angle[-2,0]
+        pitch_now  = angle[-1,0]
 
-        omega_y_last = omega[-2,1]
-        omega_y_now  = omega[-1,1]
+        omega_y_last = omega[-2,0]
+        omega_y_now  = omega[-1,0]
 
 
-        Pwm_delta = Kp * (pitch_now - pitch_last) + Kd * (omega_y_now - omega_y_last)
+        Pwm_delta = Kp * (pitch_now - pitch_desired) + Kd * (omega_y_now - omega_y_last)
 
+
+        if( Pwm_delta > 500 ):
+            Pwm_delta = 500
+        elif( Pwm_delta < -500 ):
+            Pwm_delta = -500
+    
         print("Pwm_delta", Pwm_delta)
 
-        if( np.abs(pitch_now - 0.0) < 5.0 ):
+        print("Pitch angle:", pitch_now)
+
+        if( np.abs(pitch_now - pitch_desired) < 4.0 ):
             Pwm = 1500
         elif( pitch_now > 0 ):
             Pwm = (int) (1500 + Pwm_delta * Power)
         elif( pitch_now < 0 ):
-            Pwm = (int) (1500 - Pwm_delta * Power)
+            Pwm = (int) (1500 + Pwm_delta * Power)
         else:
             pass
 
+        # Safe Protection for PWM range
+
+        if( Pwm > 1600):
+            Pwm = 1600
+        if( Pwm < 1400):
+            Pwm = 1400
+
+
         print("Pwm:", Pwm)
         
-        # Safe Protection for PWM range
-        if( Pwm > 1700):
-            Pwm = 1700
-        if( Pwm < 1300):
-            Pwm = 1300
 
         for i in range(2):
             Hardware.send_io_pwm_width(Hardware.usrl_pwm.T200_pins[i],Pwm)
@@ -220,3 +235,4 @@ if __name__ == '__main__':
 
         if stop_threads == True:
             break
+

@@ -1,7 +1,7 @@
 '''
 Date: 2021-11-10 22:11:41
 LastEditors: Guo Yuqin,12032421@mail.sustech.edu.cn
-LastEditTime: 2021-12-02 04:38:24
+LastEditTime: 2021-12-16 03:19:29
 FilePath: /servodogVersion2.0/run_robot.py
 '''
 import numpy as np
@@ -87,10 +87,6 @@ def XBOX_command(input_queue_1):
         Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],servo_1)
         # Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],1500)
         # Hardware.pi.set_servo_pulsewidth(Hardware.usrl_pwm.servo_pins[1],1500)
-
-        
-
-        
 
         ### USRL T200 control based on the value of L_step
         # -1 ->  0  ->   1
