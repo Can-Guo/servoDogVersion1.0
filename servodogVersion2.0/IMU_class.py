@@ -12,6 +12,8 @@
 '''
 
 import serial 
+from datetime import datetime
+
 
 ### IMU Class Definition
 
@@ -64,9 +66,10 @@ class IMU_class:
     def get_IMU_data(self):
         datahex = self.ser.read(33)
         self.acc_x,self.acc_y,self.acc_z,self.roll,self.pitch,self.yaw = self.DueData(datahex)
+        self.time_stamp = self.get_time_frame()
         
         # return [self.acc_x,self.acc_y,self.acc_z,self.roll,self.pitch,self.yaw]
-        return [self.roll,self.pitch,self.yaw]  # return Euler angles only !
+        return [self.roll,self.pitch,self.yaw, self.time_stamp]  # return Euler angles only !
 
     ## Define a function to convert raw data into suitable format
 
@@ -79,6 +82,7 @@ class IMU_class:
         # global  a
         # global  w
         # global  Angle
+        
 
 
         for data in inputdata:  #在输入的数据进行遍历
@@ -152,7 +156,13 @@ class IMU_class:
         return self.acc_x,self.acc_y,self.acc_z,self.roll,self.pitch,self.yaw
         # return acc_x,acc_y,acc_z,gyro_x,gyro_y,gyro_z,roll,pitch,yaw
     
-    
+
+    ## get time frame
+    def get_time_frame(self):
+
+        return datetime.now()
+
+
     def get_acc(self):  
         datahex = self.ACCData
         axl = datahex[0]                                        

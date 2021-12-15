@@ -5,7 +5,6 @@ LastEditTime: 2021-12-02 04:38:24
 FilePath: /servodogVersion2.0/run_robot.py
 '''
 import numpy as np
-# import pigpio 
 from Xbox_value import XBOX_class
 from IMU_class import IMU_class 
 from Hardware_Config import Hardware_Class
